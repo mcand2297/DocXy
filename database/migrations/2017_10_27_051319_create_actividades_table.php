@@ -17,6 +17,11 @@ class CreateActividadesTable extends Migration
             $table->increments('id');
             $table->text('comunicado');
             $table->id('id_docente');
+            $table->id('id_grupo');
+
+            $table->foreign('id_docente')->references('id')->on('docentes')->onDelete('cascade');
+            $table->foreign('id_grupo')->references('id')->on('grupos')->onDelete('cascade');
+
             $table->timestamps();
         });
     }

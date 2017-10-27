@@ -20,9 +20,9 @@ class CreateSolicitudesTable extends Migration
             $table->int('id_acudiente');
             $table->int('id_grupo');
 
-            $table->foreign('id_acudiente')->references('id')->on('acudientes');
-            $table->foreign('id_grupo')->references('id')->on('grupos');
-            
+            $table->foreign('id_acudiente')->references('id')->on('acudientes')->onDelete('cascade');
+            $table->foreign('id_grupo')->references('id')->on('grupos')->onDelete('cascade');
+
             $table->timestamps();
         });
     }

@@ -20,7 +20,7 @@ class CreateComentariosTable extends Migration
             $table->int('id_acudiente')->default(0);
             $table->int('id_actividad');
 
-            $table->foreign('id_actividad')->references('id')->on('actividades');
+            $table->foreign('id_actividad')->references('id')->on('actividades')->onDelete('cascade');
             $table->foreign('id_docente')->references('id')->on('docentes');
             $table->foreign('id_acudiente')->references('id')->on('acudientes');
 

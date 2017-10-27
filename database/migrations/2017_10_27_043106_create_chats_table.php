@@ -18,8 +18,8 @@ class CreateChatsTable extends Migration
             $table->int('id_acudiente');
             $table->int('id_docente');
 
-            $table->foreign('id_acudiente')->references('id')->on('acudientes');
-            $table->foreign('id_docente')->references('id')->on('docentes');
+            $table->foreign('id_acudiente')->references('id')->on('acudientes')->onDelete('cascade');
+            $table->foreign('id_docente')->references('id')->on('docentes')->onDelete('cascade');
 
             $table->timestamps();
         });

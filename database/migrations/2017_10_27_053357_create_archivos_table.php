@@ -20,7 +20,7 @@ class CreateArchivosTable extends Migration
             $table->char('extension', 8);
             $table->int('id_actividad');
 
-            $table->foreign('id_actividad')->references('id')->on('actividades');
+            $table->foreign('id_actividad')->references('id')->on('actividades')->onDelete('cascade');
 
             $table->timestamps();
         });
