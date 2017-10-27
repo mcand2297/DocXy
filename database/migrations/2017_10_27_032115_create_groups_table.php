@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateArchivosTable extends Migration
+class CreateGroupsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,10 @@ class CreateArchivosTable extends Migration
      */
     public function up()
     {
-        Schema::create('archivos', function (Blueprint $table) {
+        Schema::create('groups', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('codigo_ingreso');
             $table->string('nombre');
-            $table->binary('data');
-            $table->char('extension', 8);
-            $table->int('id_actividad');
-
-            $table->foreign('id_actividad')->references('id')->on('actividades')->onDelete('cascade');
-
             $table->timestamps();
         });
     }
@@ -33,6 +28,6 @@ class CreateArchivosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('archivos');
+        Schema::dropIfExists('groups');
     }
 }

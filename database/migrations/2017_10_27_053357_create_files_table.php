@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAcudientesTable extends Migration
+class CreateFilesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,15 @@ class CreateAcudientesTable extends Migration
      */
     public function up()
     {
-        Schema::create('acudientes', function (Blueprint $table) {
+        Schema::create('files', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nick');
             $table->string('nombre');
-            $table->string('apellido');
-            $table->string('email')->unique();
-            $table->string('password');
+            $table->binary('data');
+            $table->char('extension', 8);
+            $table->integer('id_actividad')->unsigned();
+
+            $table->foreign('id_actividad')->references('id')->on('activities')->onDelete('cascade');
+
             $table->timestamps();
         });
     }
@@ -31,6 +33,6 @@ class CreateAcudientesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('acudientes');
+        Schema::dropIfExists('files');
     }
 }
