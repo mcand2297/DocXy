@@ -17,9 +17,9 @@ class CreateGruposTable extends Migration
             $table->increments('id');
             $table->string('codigo_ingreso');
             $table->string('nombre');
-            $table->integer('id_docente')->unsigned();
+            //$table->integer('id_docente')->unsigned();
 
-            $table->foreign('id_docente')->references('id')->on('docentes');;
+            //$table->foreign('id_docente')->references('id')->on('docentes');
 
             $table->timestamps();
         });
