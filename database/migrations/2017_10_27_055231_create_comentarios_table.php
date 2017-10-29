@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCommentsTable extends Migration
+class CreateComentariosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,16 @@ class CreateCommentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('comments', function (Blueprint $table) {
+        Schema::create('comentarios', function (Blueprint $table) {
             $table->increments('id');
             $table->text('texto');
             $table->integer('id_docente')->unsigned()->default(0);
             $table->integer('id_acudiente')->unsigned()->default(0);
             $table->integer('id_actividad')->unsigned();
 
-            $table->foreign('id_actividad')->references('id')->on('activities')->onDelete('cascade');
-            $table->foreign('id_docente')->references('id')->on('teachers');
-            $table->foreign('id_acudiente')->references('id')->on('attendants');
+            $table->foreign('id_actividad')->references('id')->on('actividades')->onDelete('cascade');
+            $table->foreign('id_docente')->references('id')->on('docentes');
+            $table->foreign('id_acudiente')->references('id')->on('acudientes');
 
             $table->timestamps();
         });
@@ -35,6 +35,6 @@ class CreateCommentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('comments');
+        Schema::dropIfExists('comentarios');
     }
 }
