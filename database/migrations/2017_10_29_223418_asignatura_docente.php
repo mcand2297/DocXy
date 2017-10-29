@@ -13,7 +13,7 @@ class AsignaturaDocente extends Migration
      */
     public function up()
     {
-      chema::create('asignatura_docente', function(Blueprint $table){
+      Schema::create('asignatura_docente', function(Blueprint $table){
           $table->increments('id');
           $table->integer('id_asignatura')->unsigned();
           $table->integer('id_docente')->unsigned();
