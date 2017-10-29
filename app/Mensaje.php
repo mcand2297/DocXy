@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Message extends Model
+class Mensaje extends Model
 {
     protected $table='mensajes';
 

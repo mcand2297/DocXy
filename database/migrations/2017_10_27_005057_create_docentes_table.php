@@ -20,6 +20,7 @@ class CreateDocentesTable extends Migration
             $table->string('apellido');
             $table->string('email')->unique();
             $table->string('password');
+            $table->rememberToken();
             $table->timestamps();
         });
     }
