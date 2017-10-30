@@ -17,11 +17,11 @@ class CreateEstudiantesTable extends Migration
             $table->increments('id');
             $table->string('nombre');
             $table->string('apellido');
-            $table->integer('id_acudiente')->unsigned();
-            $table->integer('id_grupo')->unsigned();
+            $table->integer('acudiente_id')->unsigned();
+            $table->integer('grupo_id')->unsigned();
 
-            $table->foreign('id_acudiente')->references('id')->on('acudientes');
-            $table->foreign('id_grupo')->references('id')->on('grupos');
+            $table->foreign('acudiente_id')->references('id')->on('acudientes');
+            $table->foreign('grupo_id')->references('id')->on('grupos');
 
             $table->timestamps();
         });

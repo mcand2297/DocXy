@@ -15,11 +15,11 @@ class AsignaturaDocente extends Migration
     {
       Schema::create('asignatura_docente', function(Blueprint $table){
           $table->increments('id');
-          $table->integer('id_asignatura')->unsigned();
-          $table->integer('id_docente')->unsigned();
+          $table->integer('asignatura_id')->unsigned();
+          $table->integer('docente_id')->unsigned();
 
-          $table->foreign('id_asignatura')->references('id')->on('asignaturas')->onDelete('cascade');
-          $table->foreign('id_docente')->references('id')->on('docentes')->onDelete('cascade');
+          $table->foreign('asignatura_id')->references('id')->on('asignaturas')->onDelete('cascade');
+          $table->foreign('docente_id')->references('id')->on('docentes')->onDelete('cascade');
 
           $table->timestamps();
       });

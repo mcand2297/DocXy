@@ -9,7 +9,7 @@ class Comentario extends Model
   protected $table='comentarios';
 
   protected $fillable = [
-    'texto', 'id_docente', 'id_acudiente',
-    'id_actividad', 'created_at',
+    'texto', 'docente_id', 'acudiente_id',
+    'actividad_id', 'created_at',
   ];
 }

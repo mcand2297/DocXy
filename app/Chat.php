@@ -8,5 +8,5 @@ class Chat extends Model
 {
   protected $table='chats';
 
-  protected $fillable = ['id_acudiente', 'id_docente', ];
+  protected $fillable = ['acudiente_id', 'docente_id', ];
 }

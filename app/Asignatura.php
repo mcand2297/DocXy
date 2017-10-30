@@ -9,4 +9,8 @@ class Asignatura extends Model
     protected $table='asignaturas';
 
     protected $fillable=['nombre', ];
+
+    public function docentes(){
+      return $this->belongsToMany('App\Docente');
+    }
 }

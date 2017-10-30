@@ -10,6 +10,6 @@ class Solicitud extends Model
 
     protected $fillable=[
       'aceptado', 'codigo_ingreso',
-      'id_acudiente', 'id_grupo', 'created_at',
+      'acudiente_id', 'grupo_id', 'created_at',
     ];
 }

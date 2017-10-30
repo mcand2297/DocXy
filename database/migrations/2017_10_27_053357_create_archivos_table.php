@@ -18,9 +18,9 @@ class CreateArchivosTable extends Migration
             $table->string('nombre');
             $table->binary('data');
             $table->char('extension', 8);
-            $table->integer('id_actividad')->unsigned();
+            $table->integer('actividad_id')->unsigned();
 
-            $table->foreign('id_actividad')->references('id')->on('actividades')->onDelete('cascade');
+            $table->foreign('actividad_id')->references('id')->on('actividades')->onDelete('cascade');
 
             $table->timestamps();
         });

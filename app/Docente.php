@@ -16,4 +16,8 @@ class Docente extends Model
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function asignaturas(){
+        return $this->belongsToMany('App\Asignatura');
+    }
 }

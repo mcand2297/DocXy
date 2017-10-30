@@ -9,6 +9,6 @@ class Mensaje extends Model
     protected $table='mensajes';
 
     protected $fillable=[
-      'texto', 'id_chat', 'created_at',
+      'texto', 'chat_id', 'created_at',
     ];
 }

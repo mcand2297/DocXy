@@ -16,13 +16,13 @@ class CreateComentariosTable extends Migration
         Schema::create('comentarios', function (Blueprint $table) {
             $table->increments('id');
             $table->text('texto');
-            $table->integer('id_docente')->unsigned()->default(0);
-            $table->integer('id_acudiente')->unsigned()->default(0);
-            $table->integer('id_actividad')->unsigned();
+            $table->integer('docente_id')->unsigned()->default(0);
+            $table->integer('acudiente_id')->unsigned()->default(0);
+            $table->integer('actividad_id')->unsigned();
 
-            $table->foreign('id_actividad')->references('id')->on('actividades')->onDelete('cascade');
-            $table->foreign('id_docente')->references('id')->on('docentes');
-            $table->foreign('id_acudiente')->references('id')->on('acudientes');
+            $table->foreign('actividad_id')->references('id')->on('actividades')->onDelete('cascade');
+            $table->foreign('docente_id')->references('id')->on('docentes');
+            $table->foreign('acudiente_id')->references('id')->on('acudientes');
 
             $table->timestamps();
         });

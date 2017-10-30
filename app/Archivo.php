@@ -10,6 +10,6 @@ use Illuminate\Database\Eloquent\Model;
 
     protected $fillable= [
       'nombre', 'data', 'extension',
-      'id_actividad',
+      'actividad_id',
     ];
 }

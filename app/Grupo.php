@@ -11,4 +11,8 @@ class Grupo extends Model
     protected $fillable=[
       'codigo_ingreso', 'nombre',
     ];
+
+    public function estudiantes(){
+      return $this->hasMany('App\Estudiante');
+    }
 }

@@ -16,11 +16,11 @@ class DocenteGrupo extends Migration
       Schema::create('docente_grupo', function(Blueprint $table){
           $table->increments('id');
           $table->boolean('responsable')->default(false);
-          $table->integer('id_docente')->unsigned();
-          $table->integer('id_grupo')->unsigned();
+          $table->integer('docente_id')->unsigned();
+          $table->integer('grupo_id')->unsigned();
 
-          $table->foreign('id_docente')->references('id')->on('docentes')->onDelete('cascade');
-          $table->foreign('id_grupo')->references('id')->on('grupos')->onDelete('cascade');
+          $table->foreign('docente_id')->references('id')->on('docentes')->onDelete('cascade');
+          $table->foreign('grupo_id')->references('id')->on('grupos')->onDelete('cascade');
 
           $table->timestamps();
       });

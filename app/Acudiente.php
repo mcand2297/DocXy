@@ -16,4 +16,8 @@ class Acudiente extends Model
   protected $hidden = [
       'password', 'remember_token',
   ];
+
+  public function estudiantes(){
+    return $this->hasMany('\App\Estudiante');
+  }
 }

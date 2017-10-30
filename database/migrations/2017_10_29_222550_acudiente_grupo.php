@@ -15,11 +15,11 @@ class AcudienteGrupo extends Migration
     {
       Schema::create('acudiente_grupo', function(Blueprint $table){
           $table->increments('id');
-          $table->integer('id_acudiente')->unsigned();
-          $table->integer('id_grupo')->unsigned();
+          $table->integer('acudiente_id')->unsigned();
+          $table->integer('grupo_id')->unsigned();
 
-          $table->foreign('id_acudiente')->references('id')->on('acudientes')->onDelete('cascade');
-          $table->foreign('id_grupo')->references('id')->on('grupos')->onDelete('cascade');
+          $table->foreign('acudiente_id')->references('id')->on('acudientes')->onDelete('cascade');
+          $table->foreign('grupo_id')->references('id')->on('grupos')->onDelete('cascade');
 
           $table->timestamps();
       });

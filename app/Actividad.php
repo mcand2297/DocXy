@@ -9,6 +9,6 @@ class Actividad extends Model
     protected $table='actividades';
 
     protected $fillable=[
-      'comunicado', 'id_docente', 'id_grupo', 'created_at',
+      'comunicado', 'docente_id', 'id_grupo', 'created_at',
     ];
 }
