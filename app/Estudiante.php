@@ -10,10 +10,12 @@ class Estudiante extends Model
 
     protected $fillable=['nombre', 'apellido', ];
 
+    //un estudiante hace parte de un grupo
     public function grupo(){
       return $this->belongsTo('\App\Grupo');
     }
 
+    //un estudiante es representado por un acudiente
     public function acudiente(){
       return $this->belongsTo('\App\Acudiente');
     }

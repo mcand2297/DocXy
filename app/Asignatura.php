@@ -10,6 +10,7 @@ class Asignatura extends Model
 
     protected $fillable=['nombre', ];
 
+    //una asignatura es impartida por varios docentes
     public function docentes(){
       return $this->belongsToMany('App\Docente');
     }

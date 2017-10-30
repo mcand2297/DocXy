@@ -12,4 +12,9 @@ use Illuminate\Database\Eloquent\Model;
       'nombre', 'data', 'extension',
       'actividad_id',
     ];
+
+    //un archivo hace parte de una actividad
+    public function actividad(){
+      return $this->belongsTo('App\Actividad');
+    }
 }

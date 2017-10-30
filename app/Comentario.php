@@ -12,4 +12,9 @@ class Comentario extends Model
     'texto', 'docente_id', 'acudiente_id',
     'actividad_id', 'created_at',
   ];
+
+  //un comentario hace parte de una actividad
+  public function actividad(){
+    return $this->belongsTo('App\Actividad');
+  }
 }

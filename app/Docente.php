@@ -17,7 +17,18 @@ class Docente extends Model
         'password', 'remember_token',
     ];
 
+    //un docente puede impartir varias asignaturas
     public function asignaturas(){
         return $this->belongsToMany('App\Asignatura');
+    }
+
+    //un docente puede estar en varios grupos
+    public function grupos(){
+      return $this->belongsToMany('App\Grupo')->withPivot('responsable');
+    }
+
+    //un docente hace parte de un chat
+    public function chat(){
+      return $this->belongsTo('App\Chat');
     }
 }
