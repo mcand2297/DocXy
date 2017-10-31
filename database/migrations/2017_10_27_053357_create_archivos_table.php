@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTeachersTable extends Migration
+class CreateArchivosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,15 @@ class CreateTeachersTable extends Migration
      */
     public function up()
     {
-        Schema::create('teachers', function (Blueprint $table) {
+        Schema::create('archivos', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nick');
             $table->string('nombre');
-            $table->string('apellido');
-            $table->string('email')->unique();
-            $table->string('password');
+            $table->binary('data');
+            $table->char('extension', 8);
+            $table->integer('actividad_id')->unsigned();
+
+            $table->foreign('actividad_id')->references('id')->on('actividades')->onDelete('cascade');
+
             $table->timestamps();
         });
     }
@@ -31,6 +33,6 @@ class CreateTeachersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('teachers');
+        Schema::dropIfExists('archivos');
     }
 }

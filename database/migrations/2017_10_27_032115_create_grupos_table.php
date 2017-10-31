@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateStudentsTable extends Migration
+class CreateGruposTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,13 @@ class CreateStudentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('students', function (Blueprint $table) {
+        Schema::create('grupos', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('codigo_ingreso');
             $table->string('nombre');
-            $table->string('apellido');
-            $table->integer('id_acudiente')->unsigned();
-            $table->integer('id_grupo')->unsigned();
+            //$table->integer('id_docente')->unsigned();
 
-            $table->foreign('id_acudiente')->references('id')->on('attendants');
-            $table->foreign('id_grupo')->references('id')->on('groups');
+            //$table->foreign('id_docente')->references('id')->on('docentes');
 
             $table->timestamps();
         });
@@ -34,6 +32,6 @@ class CreateStudentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('students');
+        Schema::dropIfExists('grupos');
     }
 }
