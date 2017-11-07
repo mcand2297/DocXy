@@ -14,3 +14,16 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Route::group(['prefix' => 'docente', 'namespace' => 'Docente'], function () {
+    Route::get('/', 'Auth\LoginController@showLoginForm')->name('docente.showLoginForm');
+    Route::post('login', 'Auth\LoginController@login')->name('docente.login');
+    Route::post('logout', 'Auth\LoginController@logout')->name('docente.logout');
+    Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('docente.showRegistrationForm');
+    Route::post('register', 'Auth\RegisterController@register')->name('docente.register');
+    Route::get('home', 'HomeController@index');
+});
