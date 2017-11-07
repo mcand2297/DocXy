@@ -5,6 +5,8 @@ namespace App\Http;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use App\Http\Middleware\DocenteRedirectIfAuthenticated;
 use App\Http\Middleware\DocenteRedirectIfNotAuthenticated;
+use App\Http\Middleware\AcudienteRedirectIfAuthenticated;
+use App\Http\Middleware\AcudienteRedirectIfNotAuthenticated;
 
 
 class Kernel extends HttpKernel
@@ -62,5 +64,7 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'docente.auth' => DocenteRedirectIfNotAuthenticated::class,
         'docente.guest'=> DocenteRedirectIfAuthenticated::class,
+        'acudiente.auth' => AcudienteRedirectIfNotAuthenticated::class,
+        'acudiente.guest'=> AcudienteRedirectIfAuthenticated::class,
     ];
 }

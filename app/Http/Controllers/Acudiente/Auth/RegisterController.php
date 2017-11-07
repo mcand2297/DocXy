@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Docente\Auth;
+namespace App\Http\Controllers\Acudiente\Auth;
 
-use App\Docente;
+use App\Acudiente;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Auth\Events\Registered;
@@ -30,7 +30,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/docente/home';
+    protected $redirectTo = '/acudiente/home';
 
     /**
      * Create a new controller instance.
@@ -39,7 +39,7 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('docente.guest');
+        $this->middleware('acudiente.guest');
     }
 
     /**
@@ -54,7 +54,7 @@ class RegisterController extends Controller
             'nick' => 'required|string|max:255',
             'nombre' => 'required|string|max:255',
             'apellido' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:docentes',
+            'email' => 'required|string|email|max:255|unique:acudientes',
             'password' => 'required|string|min:6|confirmed',
         ]);
     }
@@ -67,7 +67,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return Docente::create([
+        return Acudiente::create([
             'nick' => $data['nick'],
             'nombre' => $data['nombre'],
             'apellido' => $data['apellido'],
@@ -78,11 +78,11 @@ class RegisterController extends Controller
 
     public function showRegistrationForm()
     {
-        return view('docente.auth.register');
+        return view('acudiente.auth.register');
     }
 
     protected function guard()
     {
-        return Auth::guard('docente');
+        return Auth::guard('acudiente');
     }
 }
