@@ -67,7 +67,7 @@
             </div>
             <div id="contenedor">
                 <div id="botones">
-                    <a class="active boton">
+                    <a href="{{route('docente.inicio')}}"  class="active boton">
                         <h5>Eventos</h5>
                     </a>
 
@@ -82,16 +82,11 @@
                     <h4>Mis Grupos</h4>
                     <ul>
 												@if(count($grupos)!=0)
-												@foreach($grupos as $grupo)
+												@foreach($grupos as $index)
                         <li>
-                        	<a href="{{route('docente.showGroup')}}" onclick="event.preventDefault();
-																	 document.getElementById('ver-grupo').submit();"><img  src="{{asset('assets/images/group-green.png')}}" >{{$grupo->nombre}}</a>
+                        	<a href="{{route('docente.showGroup', array('grupo'=>$index))}}"><img  src="{{asset('assets/images/group-green.png')}}" >{{$index->nombre}}</a>
                         </li>
 												@endforeach
-												<form id="ver-grupo" action="{{ route('docente.showGroup') }}" method="POST" style="display: none;">
-													  {{ csrf_field() }}
-														<input type="hidden" id="grupo_id" name="grupo_id" value="{{$grupo->id}}">
-											  </form>
 												@else
 												<h4>No tiene grupos</h4>
 												@endif

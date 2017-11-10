@@ -62,7 +62,7 @@
             </div>
             <div id="contenedor">
                 <div id="botones">
-                    <a href="Eventos(Maestro).html" class="boton">
+                    <a href="{{route('docente.inicio')}}" class="boton">
                         <h5>Eventos</h5>
                     </a>
 
@@ -78,16 +78,11 @@
 
                     <ul>
 											@if(count($grupos)!=0)
-											@foreach($grupos as $grupo)
+											@foreach($grupos as $index)
 											<li>
-												<a href="{{route('docente.showGroup')}}" onclick="event.preventDefault();
-																 document.getElementById('ver-grupo').submit();"><img  src="{{asset('assets/images/group-green.png')}}" >{{$grupo->nombre}}</a>
+												<a href="{{ route('docente.showGroup', ['grupo' => $index])}}"><img  src="{{asset('assets/images/group-green.png')}}" >{{$index->nombre}}</a>
 											</li>
 											@endforeach
-											<form id="ver-grupo" action="{{ route('docente.showGroup') }}" method="POST" style="display: none;">
-													{{ csrf_field() }}
-													<input type="hidden" id="grupo_id" name="grupo_id" value="{{$grupo->id}}">
-											</form>
 											@else
 											<h4>No tiene grupos</h4>
 											@endif
@@ -124,32 +119,43 @@
 
             <!-- Caja de texto para excribir un nuevo evento -->
             <div class="contEvento">
-                <form>
-                    <textarea placeholder="Comparte un nuevo evento"></textarea>
+                <form name="crear_actividad" action="{{ route('docente.crearActividad')}}" method="post">
+									{{ csrf_field() }}
+										<input type="hidden" name="grupo_id" value="{{$grupo->id}}">
+                    <textarea name="comunicado" id="comunicado" placeholder="Comparte un nuevo evento"></textarea>
                     <button class="button alt small ">Compartir</button>
                     <button class="button alt small " type="reset">Reset</button>
                 </form>
             </div>
-
+					@foreach($grupo->actividades as $actividad)
             <article class="cont post">
                 <header>
                     <div class="meta">
-                        <h4 class="nombre">Richard Camacho</h4>
+                        <h4 class="nombre">{{App\Docente::find($actividad->docente_id)->nombre}}</h4>
+												<h4 class="apellido">{{App\Docente::find($actividad->docente_id)->apellido}}</h4>
                         <h4 class="grupo">Segundo</h4>
-                        <time class="publicado" datetime="2015-11-01">2017-11-12 22:26:01</time>
+                        <time class="publicado" datetime="2015-11-01">{{$actividad->created_at}}</time>
                     </div>
                 </header>
-                    <p>Mauris neque quam, fermentum ut nisl vitae, convallis maximus nisl. Sed mattis nunc id lorem euismod placerat. Vivamus porttitor magna enim, ac accumsan tortor cursus at. Phasellus sed ultricies mi non congue ullam corper. Praesent tincidunt sed tellus ut rutrum. Sed vitae justo condimentum, porta lectus vitae, ultricies congue gravida diam non fringilla.</p>
+                    <p>{{$actividad->comunicado}}</p>
 
                 <div class="informacion">
                     <h5> 5 han visto esto</h5>
 
                     <div id="comentarios">
-                        <h5 class="verComentarios"> Comentarios <span>0</span></h5>
-
-                        <ul class="comentarios">
-                        </ul>
-
+                        <h5 class="verComentarios"> Comentarios <span>{{$actividad->comentarios->count()}}</span></h5>
+												@foreach($actividad->comentarios as $comentario)
+                        	<ul class="comentarios">
+														@if(!is_null($comentario->docente_id))
+															<h5>{{App\Docente::find($comentario->docente_id)->nombre}} {{App\Docente::find($comentario->docente_id)->apellido}}</h5>
+														@else
+														<h5>{{App\Acudiente::find($comentario->acudiente_id)->nombre}} {{App\Acudiente::find($comentario->acudiente_id)->apellido}}</h>
+														@endif
+														<ul>
+															<p>{{$comentario->texto}}</p>
+														</ul>
+                        	</ul>
+												@endforeach
                         <div>
                             <h5>Escribe un comentario.</h5>
                             <textarea id="caja"></textarea> <button class="button alt">Enviar</button>
@@ -159,65 +165,7 @@
                 </div>
 
             </article>
-
-            <article class="cont post">
-                <header>
-                    <div class="meta">
-                        <h4 class="nombre">Richard Camacho</h4>
-                         <h4 class="grupo">Segundo</h4>
-                        <time class="publicado" datetime="2015-11-01">2017-11-12 22:20:19</time>
-                    </div>
-                </header>
-                    <p>Mauris neque quam, fermentum ut nisl vitae, convallis maximus nisl. Sed mattis nunc id lorem euismod placerat. Vivamus porttitor magna enim, ac accumsan tortor cursus at. Phasellus sed ultricies mi non congue ullam corper. Praesent tincidunt sed tellus ut rutrum. Sed vitae justo condimentum, porta lectus vitae, ultricies congue gravida diam non fringilla. Cras vehicula tellus eu ligula viverra, ac fringilla turpis suscipit. Quisque vestibulum rhoncus ligula.</p>
-
-                <div class="informacion">
-                    <h5> 5 han visto esto</h5>
-
-                    <div id="comentarios">
-                        <h5 class="verComentarios"> Comentarios <span>0</span></h5>
-
-                        <ul class="comentarios">
-                        </ul>
-
-                        <div>
-                            <h5>Escribe un comentario.</h5>
-                            <textarea id="caja"></textarea> <button class="button alt">Enviar</button>
-                        </div>
-
-                    </div>
-                </div>
-
-            </article>
-
-            <article class="cont post">
-                <header>
-                    <div class="meta">
-                        <h4 class="nombre">Richard Camacho</h4>
-                         <h4 class="grupo">Segundo</h4>
-                        <time class="publicado" datetime="2015-11-01">2017-10-02 12:01:19</time>
-                    </div>
-                </header>
-                    <p>Mauris neque quam, fermentum ut nisl vitae, convallis maximus nisl. Sed mattis nunc id lorem euismod placerat. Vivamus porttitor magna enim, ac accumsan tortor cursus at. Phasellus sed ultricies mi non congue ullam corper. Praesent tincidunt sed tellus ut rutrum. Sed vitae justo condimentum, porta lectus vitae, ultricies congue gravida diam non fringilla. Cras vehicula tellus eu ligula viverra, ac fringilla turpis suscipit. Quisque vestibulum rhoncus ligula.</p>
-
-                <div class="informacion">
-                    <h5> 5 han visto esto</h5>
-
-                    <div id="comentarios">
-                        <h5 class="verComentarios"> Comentarios <span>0</span></h5>
-
-                        <ul class="comentarios">
-                        </ul>
-
-                        <div>
-                            <h5>Escribe un comentario.</h5>
-                            <textarea id="caja"></textarea> <button class="button alt">Enviar</button>
-                        </div>
-
-                    </div>
-                </div>
-
-            </article>
-
+					@endforeach
         </div>
 
         <!-- Ventana Modal Crear grupo-->
@@ -262,11 +210,14 @@
                             <tbody>
 															@foreach($docentesGenerales as $docente)
                                 <tr>
+																		<td>{{$docente->nick}}</td>
                                     <td>{{$docente->nombre}}</td>
                                     <td>{{$docente->apellido}}</td>
 																		@foreach($grupo->docentes as $docGrupo)
 																			@if($docente->id == $docGrupo->id)
-																				<td>Agregado</td>
+																				<td>Participante</td>
+																			@else
+																				<td></td>
 																			@endif
 																		@endforeach
                                 </tr>
@@ -276,7 +227,7 @@
                     </div>
 
 
-                    <form>
+                    <form >
                         <input type="text" placeholder="Agrega a un maestro">
                         <button type="submit" class="button alt"> Listo</button>
                     </form>
