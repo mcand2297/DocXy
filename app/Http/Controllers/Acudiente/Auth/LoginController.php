@@ -41,7 +41,7 @@ class LoginController extends Controller
 
     public function showLoginForm()
     {
-         return view('acudiente.auth.login');
+         return view('acudiente.auth.inicioAcudiente');
     }
 
     public function logout(Request $request)

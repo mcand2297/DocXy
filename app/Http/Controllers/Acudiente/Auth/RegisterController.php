@@ -78,7 +78,7 @@ class RegisterController extends Controller
 
     public function showRegistrationForm()
     {
-        return view('acudiente.auth.register');
+        return view('acudiente.auth.RegistroAcudiente');
     }
 
     protected function guard()

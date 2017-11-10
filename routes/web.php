@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('InicioDocXy');
 });
 
 Auth::routes();
@@ -25,7 +25,11 @@ Route::group(['prefix' => 'docente', 'namespace' => 'Docente'], function () {
     Route::post('logout', 'Auth\LoginController@logout')->name('docente.logout');
     Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('docente.showRegistrationForm');
     Route::post('register', 'Auth\RegisterController@register')->name('docente.register');
-    Route::get('home', 'HomeController@index');
+    Route::group(['prefix' => 'home'], function(){
+      Route::get('/', 'HomeController@index');
+      Route::post('crearGrupo', 'HomeController@crearGrupo')->name('docente.crearGrupo');
+      Route::post('grupo', 'HomeController@verGrupo')->name('docente.showGroup');
+    });
 });
 
 Route::group(['prefix' => 'acudiente', 'namespace' => 'Acudiente'], function () {

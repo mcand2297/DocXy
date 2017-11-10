@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Docente\Auth;
 
 use App\Docente;
+use App\Asignatura;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Auth\Events\Registered;
@@ -67,18 +68,30 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return Docente::create([
+        $docente = new Docente;
+        $docente->nick = $data['nick'];
+        $docente->nombre = $data['nombre'];
+        $docente->apellido = $data['apellido'];
+        $docente->email = $data['email'];
+        $docente->password = bcrypt($data['password']);
+        $docente -> save();
+        $docente -> asignaturas() -> attach($data['category']);
+
+        return $docente;
+
+        /*return Docente::create([
             'nick' => $data['nick'],
             'nombre' => $data['nombre'],
             'apellido' => $data['apellido'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
-        ]);
+        ]);*/
     }
 
     public function showRegistrationForm()
     {
-        return view('docente.auth.register');
+        $asig = Asignatura::orderBy('id', 'ASC') -> paginate(5);
+        return view('docente.auth.RegistroDocente', compact('asig'));
     }
 
     protected function guard()
