@@ -103,144 +103,68 @@
         <div id="main">
 
             <!-- Post-->
+				@foreach($grupos as $grupo)
+					@foreach($grupo->actividades as $actividad)
             <article class="cont post">
-
-                <header>
-                    <div class="meta">
-                        <h4 class="nombre">Richard Camacho</h4>
-                        <h4 class="grupo">Segundo</h4>
-                        <time class="publicado" datetime="2015-11-01">2017-11-12 22:26:01</time>
-                    </div>
-                </header>
-
-                    <p>Mauris neque quam, fermentum ut nisl vitae, convallis maximus nisl. Sed mattis nunc id lorem euismod placerat. Vivamus porttitor magna enim, ac accumsan tortor cursus at. Phasellus sed ultricies mi non congue ullam corper. Praesent tincidunt sed tellus ut rutrum. Sed vitae justo condimentum, porta lectus vitae, ultricies congue gravida diam non fringilla.</p>
+							@foreach($grupo->docentes as $doc)
+								@if($doc->id == $actividad->docente_id)
+	                <header>
+	                    <div class="meta">
+	                        <h4 class="nombre">{{$doc->nombre}} {{$doc->apellido}}</h4>
+	                        <h4 class="grupo">{{$grupo->nombre}}</h4>
+	                        <time class="publicado" datetime="2015-11-01">{{$actividad->created_at}}</time>
+	                    </div>
+	                </header>
+								@endif
+							@endforeach
+                  <p>{{$actividad->comunicado}}</p>
 
                 <div class="informacion">
                     <h5> 5 han visto esto</h5>
 
                     <div id="comentarios">
-                        <h5 class="verComentarios"> Comentarios <span>3</span></h5>
+                        <h5 class="verComentarios"> Comentarios <span>{{$actividad->comentarios->count()}}</span></h5>
 
                         <ul class="comentarios">
-                            <li id="comentario">
-                                <time>27-10-2017 3:46 pm</time> <h1>Pablo Emilio Pupo Marchena</h1>
-                                <p>En este bloque se tendran los comentarios que pueden hacer los padres en cada una de las publicaciones hechas por los maestros, estoy viendo si no se daña el diseño escribiendo partes largas de texto :|</p>
-
-                            </li>
-                            <li id="comentario">
-                                <time>27-10-2017 4:46 pm</time> <h1>Jorge Castro</h1>
-                                <p>En este bloque se tendran los comentarios que pueden hacer lo spadres en cada una de las publicaciones hechas por los maestros, estoy vinedo si no se daña el dieño escribiendo partes largas de texto :|</p>
-                            </li>
-                            <li id="comentario">
-                                <time>28-10-2017 6:40 pm</time> <h1>Jorge Castro</h1>
-                                <p>En este bloque se tendran los comentarios que pueden hacer lo spadres en cada una de las publicaciones hechas por los maestros, estoy vinedo si no se daña el dieño escribiendo partes largas de texto :|</p>
-                            </li>
+													@foreach($actividad->comentarios as $comentario)
+														 @if(!is_null($comentario->docente_id))
+														 		@foreach($grupo->docentes as $doc)
+																	@if($doc->id == $comentario->docente_id)
+																	  <li id="comentario">
+																			 <time>{{$comentario->created_at}}</time> <h5>{{$doc->nombre}} {{$doc->apellido}}</h5>
+																			 <p>{{$comentario->texto}}</p>
+																	  </li>
+																  @endif
+																@endforeach
+														 @else
+															 @foreach($grupo->acudientes as $acu)
+																 @if($acu->id == $comentario->acudiente_id)
+																	 <li id="comentario">
+																			<time>{{$comentario->created_at}}</time> <h5>{{$acu->nombre}} {{$acu->apellido}}</h5>
+																			<p>{{$comentario->texto}}</p>
+																	 </li>
+																 @endif
+															 @endforeach
+														 @endif
+													@endforeach
                         </ul>
 
                         <div>
                             <h5>Escribe un comentario.</h5>
-                            <textarea id="caja"></textarea> <button class="button alt">Enviar</button>
+														<form id="enviarComentario"  action="{{route('docente.crearComentario')}}" method="post">
+															{{ csrf_field() }}
+															<input type="hidden" id="actividad" name="actividad" value="{{$actividad->id}}">
+															<textarea id="texto" name="texto"></textarea>
+															<button type="submit" class="button alt">Enviar</button>
+														</form>
                         </div>
 
                     </div>
                 </div>
             </article>
-
-            <article class="cont post">
-
-                <header>
-                    <div class="meta">
-                        <h4 class="nombre">Richard Camacho</h4>
-                         <h4 class="grupo">Primero</h4>
-                        <time class="publicado" datetime="2015-11-01">2017-11-12 22:20:19</time>
-                    </div>
-                </header>
-
-                    <p>Mauris neque quam, fermentum ut nisl vitae, convallis maximus nisl. Sed mattis nunc id lorem euismod placerat. Vivamus porttitor magna enim, ac accumsan tortor cursus at. Phasellus sed ultricies mi non congue ullam corper. Praesent tincidunt sed tellus ut rutrum. Sed vitae justo condimentum, porta lectus vitae, ultricies congue gravida diam non fringilla. Cras vehicula tellus eu ligula viverra, ac fringilla turpis suscipit. Quisque vestibulum rhoncus ligula.</p>
-
-                <div class="informacion">
-                    <h5> 5 han visto esto</h5>
-
-                    <div id="comentarios">
-                        <h5 class="verComentarios"> Comentarios <span>1</span></h5>
-
-                        <ul class="comentarios">
-                            <li id="comentario">
-                                <time>27-10-2017 3:46 pm</time> <h1>Pablo Emilio Pupo Marchena</h1>
-                                <p>En este bloque se tendran los comentarios que pueden hacer los padres en cada una de las publicaciones hechas por los maestros, estoy viendo si no se daña el diseño escribiendo partes largas de texto :|</p>
-
-                            </li>
-                        </ul>
-
-                        <div>
-                            <h5>Escribe un comentario.</h5>
-                            <textarea id="caja"></textarea> <button class="button alt">Enviar</button>
-                        </div>
-                    </div>
-
-                </div>
-
-            </article>
-
-            <article class="cont post">
-                <header>
-                    <div class="meta">
-                        <h4 class="nombre">Richard Camacho</h4>
-                         <h4 class="grupo">Segundo</h4>
-                        <time class="publicado" datetime="2015-11-01">2017-10-02 12:01:19</time>
-                    </div>
-                </header>
-                    <p>Mauris neque quam, fermentum ut nisl vitae, convallis maximus nisl. Sed mattis nunc id lorem euismod placerat. Vivamus porttitor magna enim, ac accumsan tortor cursus at. Phasellus sed ultricies mi non congue ullam corper. Praesent tincidunt sed tellus ut rutrum. Sed vitae justo condimentum, porta lectus vitae, ultricies congue gravida diam non fringilla. Cras vehicula tellus eu ligula viverra, ac fringilla turpis suscipit. Quisque vestibulum rhoncus ligula.</p>
-
-                <div class="informacion">
-                    <h5> 5 han visto esto</h5>
-
-                    <div id="comentarios">
-                        <h5 class="verComentarios"> Comentarios <span>0</span></h5>
-
-                        <ul class="comentarios">
-                        </ul>
-
-                        <div>
-                            <h5>Escribe un comentario.</h5>
-                            <textarea id="caja"></textarea> <button class="button alt">Enviar</button>
-                        </div>
-
-                    </div>
-                </div>
-
-            </article>
-
-            <article class="cont post">
-                <header>
-                    <div class="meta">
-                        <h4 class="nombre">Richard Camacho</h4>
-                         <h4 class="grupo">Tercero</h4>
-                        <time class="publicado" datetime="2015-11-01">2017-10-02 12:01:19</time>
-                    </div>
-                </header>
-                    <p>Mauris neque quam, fermentum ut nisl vitae, convallis maximus nisl. Sed mattis nunc id lorem euismod placerat. Vivamus porttitor magna enim, ac accumsan tortor cursus at. Phasellus sed ultricies mi non congue ullam corper. Praesent tincidunt sed tellus ut rutrum. Sed vitae justo condimentum, porta lectus vitae, ultricies congue gravida diam non fringilla. Cras vehicula tellus eu ligula viverra, ac fringilla turpis suscipit. Quisque vestibulum rhoncus ligula.</p>
-
-                <div class="informacion">
-                    <h5> 5 han visto esto</h5>
-
-                    <div id="comentarios">
-                        <h5 class="verComentarios"> Comentarios <span>0</span></h5>
-
-                        <ul class="comentarios">
-                        </ul>
-
-                        <div>
-                            <h5>Escribe un comentario.</h5>
-                            <textarea id="caja"></textarea> <button class="button alt">Enviar</button>
-                        </div>
-
-                    </div>
-                </div>
-
-            </article>
-
-        </div>
+					@endforeach
+				@endforeach
+      </div>
 
         <!-- Ventana Modal Crear grupo-->
         <div class="cuerpoModalDO cng">

@@ -30,7 +30,12 @@ Route::group(['prefix' => 'docente', 'namespace' => 'Docente'], function () {
       Route::post('/', 'HomeController@crearGrupo')->name('docente.crearGrupo');
       Route::group(['prefix' => 'grupo'], function(){
         Route::get('{grupo}', 'HomeController@verGrupo')->name('docente.showGroup');
-        Route::post('/', 'HomeController@crearActividad')->name('docente.crearActividad');
+        Route::delete('/eliminarGrupo', 'HomeController@eliminarGrupo')->name('docente.eliminarGrupo');
+        Route::post('/crearActividad', 'HomeController@crearActividad')->name('docente.crearActividad');
+        Route::post('/crearComentario', 'HomeController@crearComentario')->name('docente.crearComentario');
+        Route::post('/agregarEstudiante', 'HomeController@agregarEstudiante')->name('docente.agregarEstudiante');
+        Route::post('/agregarDocente', 'HomeController@agregarDocente')->name('docente.agregarDocente');
+
       });
     });
 });

@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Grupo;
 use App\Docente;
 use App\Actividad;
+use App\Comentario;
+use App\Estudiante;
 
 class HomeController extends Controller
 {
@@ -64,6 +66,12 @@ class HomeController extends Controller
       //return view('docente.Grupo(Maestro)')->with('grupo', $grupo)->with('docenteResponsable', $docenteResponsable);
     }
 
+    public function eliminarGrupo(Request $request){
+      $grp = Grupo::find($request->grupo);
+      $grp->delete();
+      return redirect("/docente/home");
+    }
+
     public function crearActividad(Request $request){
       $act = new Actividad;
       //dd($request);
@@ -71,6 +79,41 @@ class HomeController extends Controller
       $act->grupo_id = $request->grupo_id;
       $act->docente_id = Auth::guard('docente')->user()->id;
       $act->save();
-      return redirect("docente/home/grupo/".$request->grupo_id);
+      return redirect()->back();
+    }
+
+    public function agregarDocente(Request $request){
+      $grp = Grupo::find($request->grupo);
+      $doc = Docente::where('nick',"=", $request->nick)->first();
+      //dd($doc);
+      foreach ($grp->docentes as $docente) {
+        if($docente->id == $doc->id){
+          return redirect()->back();
+        }
+      }
+      $grp->docentes()->attach($doc->id);
+      return redirect()->back();
+    }
+
+    public function agregarEstudiante(Request $request){
+      //dd($request);
+      $est = new Estudiante;
+      $est->nombre = $request->nombre;
+      $est->apellido = $request->apellido;
+      $est->grupo_id = $request->grupo;
+      $est->save();
+      return redirect()->back();
+    }
+
+    public function crearComentario(Request $request){
+      $coment = new Comentario;
+      //dd($request->actividad);
+      $act = Actividad::find($request->actividad);
+      $coment->texto = $request->texto;
+      $coment->docente_id = Auth::guard('docente')->user()->id;
+      $coment->actividad_id = $act->id;
+      //dd($coment);
+      $coment->save();
+      return redirect()->back();
     }
 }

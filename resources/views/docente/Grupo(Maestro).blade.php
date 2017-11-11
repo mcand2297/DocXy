@@ -111,10 +111,19 @@
                 <!-- para mostrar el estado en el grupo (PARTICIPANDO / MI GRUPO) -->
                     <h5 id="estado">Mi grupo</h5>
                     <ul class="actions">
-                        <li><button class="button alt">Eliminar Grupo</button></li>
+											@if(Auth::guard('docente')->user()->id == $docenteResponsable->id)
+                        <li><button id="eliminar" class="button alt" onclick="location.href = '{{route('docente.eliminarGrupo')}}';
+													event.preventDefault(); document.getElementById('eliminarGrupo').submit();">Eliminar Grupo</button></li>
+											@endif
                         <li><button id="participantes" class="button alt">Participantes</button></li>
                         <li><button id="estudiantes" class="button alt">Estudiantes</button></li>
                     </ul>
+										<form id="eliminarGrupo" action="{{route('docente.eliminarGrupo')}}" method="post">
+											{{ csrf_field() }}
+												<input type="hidden" name="_method" value="DELETE">
+												<input type="hidden" name="_token" value="{{ csrf_token() }}">
+												<input type="hidden" name="grupo" value="{{$grupo->id}}">
+										</form>
             </div>
 
             <!-- Caja de texto para excribir un nuevo evento -->
@@ -129,36 +138,55 @@
             </div>
 					@foreach($grupo->actividades as $actividad)
             <article class="cont post">
-                <header>
-                    <div class="meta">
-                        <h4 class="nombre">{{App\Docente::find($actividad->docente_id)->nombre}}</h4>
-												<h4 class="apellido">{{App\Docente::find($actividad->docente_id)->apellido}}</h4>
-                        <h4 class="grupo">Segundo</h4>
-                        <time class="publicado" datetime="2015-11-01">{{$actividad->created_at}}</time>
-                    </div>
-                </header>
-                    <p>{{$actividad->comunicado}}</p>
+							@foreach($grupo->docentes as $doc)
+								@if($doc->id == $actividad->docente_id)
+	                <header>
+	                  <div class="meta">
+	                      <h4 class="nombre">{{$doc->nombre}} {{$doc->apellido}}</h4>
+	                      <h4 class="grupo">Segundo</h4>
+	                      <time class="publicado" datetime="2015-11-01">{{$actividad->created_at}}</time>
+	                  </div>
+	                </header>
+								@endif
+							@endforeach
+                  <p>{{$actividad->comunicado}}</p>
 
                 <div class="informacion">
                     <h5> 5 han visto esto</h5>
 
                     <div id="comentarios">
                         <h5 class="verComentarios"> Comentarios <span>{{$actividad->comentarios->count()}}</span></h5>
-												@foreach($actividad->comentarios as $comentario)
-                        	<ul class="comentarios">
-														@if(!is_null($comentario->docente_id))
-															<h5>{{App\Docente::find($comentario->docente_id)->nombre}} {{App\Docente::find($comentario->docente_id)->apellido}}</h5>
-														@else
-														<h5>{{App\Acudiente::find($comentario->acudiente_id)->nombre}} {{App\Acudiente::find($comentario->acudiente_id)->apellido}}</h>
-														@endif
-														<ul>
-															<p>{{$comentario->texto}}</p>
-														</ul>
-                        	</ul>
-												@endforeach
+													<ul class="comentarios">
+														@foreach($actividad->comentarios as $comentario)
+															@if(!is_null($comentario->docente_id))
+																@foreach($grupo->docentes as $docente)
+																	@if($docente->id == $comentario->docente_id)
+																	 <li id="comentario">
+																		 <time>{{$comentario->created_at}}</time> <h5>{{$docente->nombre}} {{$docente->apellido}}</h5>
+ 																		 <p>{{$comentario->texto}}</p>
+																	 </li>
+																	@endif
+																@endforeach
+															@else
+																@foreach($grupo->acudientes as $acudiente)
+																	@if($acudiente->id == $comentario->acudiente_id)
+																		<li id="comentario">
+																			<time>{{$comentario->created_at}}</time> <h5>{{$acudiente->nombre}} {{$acudiente->apellido}}</h>
+																			<p>{{$comentario->texto}}</p>
+																		</li>
+																	@endif
+																@endforeach
+															@endif
+													 @endforeach
+													</ul>
                         <div>
                             <h5>Escribe un comentario.</h5>
-                            <textarea id="caja"></textarea> <button class="button alt">Enviar</button>
+																<form id="enviarComentario"  action="{{route('docente.crearComentario')}}" method="post">
+																	{{ csrf_field() }}
+																	<input type="hidden" id="actividad" name="actividad" value="{{$actividad->id}}">
+																	<textarea id="texto" name="texto"></textarea>
+																	<button type="submit" class="button alt">Enviar</button>
+																</form>
                         </div>
 
                     </div>
@@ -208,30 +236,42 @@
                     <div id="tablaP" class="table-wrapper">
                         <table>
                             <tbody>
-															@foreach($docentesGenerales as $docente)
-                                <tr>
-																		<td>{{$docente->nick}}</td>
-                                    <td>{{$docente->nombre}}</td>
-                                    <td>{{$docente->apellido}}</td>
-																		@foreach($grupo->docentes as $docGrupo)
-																			@if($docente->id == $docGrupo->id)
-																				<td>Participante</td>
-																			@else
-																				<td></td>
-																			@endif
-																		@endforeach
-                                </tr>
-															@endforeach
+															@if(Auth::guard('docente')->user()->id == $docenteResponsable->id)
+																@foreach($docentesGenerales as $docente)
+																	<tr>
+																			<td>{{$docente->nick}}</td>
+																			<td>{{$docente->nombre}}</td>
+																			<td>{{$docente->apellido}}</td>
+																			@foreach($grupo->docentes as $docGrupo)
+																				@if($docente->id == $docGrupo->id)
+																					<td>Participante</td>
+																				@else
+																					<td></td>
+																				@endif
+																			@endforeach
+																	</tr>
+																@endforeach
+															@else
+																@foreach($grupo->docentes as $docente)
+																<tr>
+																	<td>{{$docente->nick}}</td>
+																	<td>{{$docente->nombre}}</td>
+																	<td>{{$docente->apellido}}</td>
+																</tr>
+																@endforeach
+															@endif
                             </tbody>
                         </table>
                     </div>
 
-
-                    <form >
-                        <input type="text" placeholder="Agrega a un maestro">
-                        <button type="submit" class="button alt"> Listo</button>
-                    </form>
-
+										@if(Auth::guard('docente')->user()->id == $docenteResponsable->id)
+											<form name="agregarDocente" method="post" action="{{route('docente.agregarDocente')}}">
+												{{ csrf_field() }}
+													<input type="hidden" name="grupo" value="{{$grupo->id}}">
+													<input name="nick" type="text" placeholder="Agrega a un maestro por nick">
+													<button type="submit" class="button alt"> Listo</button>
+											</form>
+										@endif
                 </div>
             </div>
 
@@ -248,40 +288,26 @@
                     <div id="tabla_est" class="table-wrapper">
                         <table>
                             <tbody>
-                                <tr>
-                                    <td>Richard Camacho</td>
-                                </tr>
-                                <tr>
-                                    <td>Pablo Pupo</td>
-                                </tr>
-                                <tr>
-                                    <td>Jorge Castro</td>
-                                </tr>
-                                <tr>
-                                    <td>Pablo Pupo</td>
-                                </tr>
-                                <tr>
-                                    <td>Pablo Pupo</td>
-                                </tr>
-                                <tr>
-                                    <td>Pablo Pupo</td>
-                                </tr>
-                                <tr>
-                                    <td>Pablo Pupo</td>
-                                </tr>
-                                <tr>
-                                    <td>Pablo Pupo</td>
-                                </tr>
+															@foreach($grupo->estudiantes as $estudiante)
+																<tr>
+																		<td>{{$estudiante->nombre}}</td>
+																		<td>{{$estudiante->apellido}}</td>
+																		<td>Acudiente</td>
+																</tr>
+															@endforeach
                             </tbody>
                         </table>
                     </div>
-
-                    <form>
-                        <h5>Agrega a un estudiante</h5>
-                        <input type="text" placeholder="Nombre">
-                        <button type="submit" class="button alt"> Listo</button>
-                    </form>
-
+										@if(Auth::guard('docente')->user()->id == $docenteResponsable->id)
+											<form name="agregarEstudiante" method="post" action="{{route('docente.agregarEstudiante')}}">
+												{{ csrf_field() }}
+													<h5>Agrega a un estudiante</h5>
+													<input name="grupo" type="hidden" name="grupo" value="{{$grupo->id}}">
+													<input name="nombre" type="text" placeholder="Nombres">
+													<input name="apellido" type="text" placeholder="Apellidos">
+													<button type="submit" class="button alt"> Listo</button>
+											</form>
+										@endif
                 </div>
             </div>
 
