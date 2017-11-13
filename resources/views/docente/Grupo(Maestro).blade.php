@@ -66,7 +66,7 @@
                         <h5>Eventos</h5>
                     </a>
 
-                    <a href="Mensajes(Maestro).html" class="boton">
+                    <a href="{{route('docente.showChats')}}" class="boton">
                         <h5>Mensajes
                             <span class="notif">50</span>
                         </h5>

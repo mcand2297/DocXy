@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Docente;
 
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;//para heredar
+use Illuminate\Http\Request;//para tratar peticiones
 use App\Grupo;
 use App\Docente;
 use App\Actividad;
@@ -31,58 +31,56 @@ class HomeController extends Controller
      */
     public function index()
     {   $grupos = Auth::guard('docente')->user()->grupos->unique('id');//elimina duplicados
-        //dd($grupos);
         $asigs = Asignatura::orderBy('id', 'ASC') -> paginate(5);
-        //dd($grupos);
         return view('docente.Eventos(Maestro)')->with('grupos', $grupos)->with('asigs', $asigs);
     }
 
-    public function verGrupo($grupo){
-      //dd($request);
+    public function verChat(){
+      $grupos = Auth::guard('docente')->user()->grupos->unique('id');
       $asigs = Asignatura::orderBy('id', 'ASC') -> paginate(5);
-      $grp = Grupo::find($grupo);
-      //dd($grupo);
-      //$actividades = Actividad::where('grupo_id', "=", $grp->id)->get();
-      //dd($actividades);
+      return view('docente.Mensajes(Maestro)')->with('grupos', $grupos)->with('asigs', $asigs);
+    }
+
+    public function verGrupo($grupo){
+      $asigs = Asignatura::orderBy('id', 'ASC') -> paginate(5);//obtener asignaturas disponibles
+      $grp = Grupo::find($grupo);//obtener grupo a ver
+      //para ver quien es el docente responsable del grupo
       foreach ($grp->docentes->unique('id') as $docente){
         if($docente->pivot->responsable){
             $docenteResponsable = Docente::find($docente->id);
         }
       }
-      //dd($docenteResponsable);
       //para comparar los docentes y encontrar cuales pertenencen al grupo
       $docentesGenerales = Docente::all();
       $grupos = Auth::guard('docente')->user()->grupos;
       $grupos = $grupos->unique('id');//elimina duplicados
+      //para ver cuales asignaturas imparte un docente en el grupo
       $asigsActv = collect();
-      //$asigsActv->push('este es un agregado');
       foreach (Auth::guard('docente')->user()->grupos as $grupo) {
         if($grupo->id == $grp->id){
           $asigsActv = $grupo->asignaturas;
         }
       }
-      //dd($asigsActv);
+      //para mostrar la vista del grupo
       return view('docente.Grupo(Maestro)')->with('grupo', $grp)->with('docenteResponsable',
       $docenteResponsable)->with('grupos', $grupos)->with('docentesGenerales', $docentesGenerales)->with('asigs', $asigs)
       ->with('asigsActv', $asigsActv);
     }
 
     public function crearGrupo(Request $request){
-      //dd($request);
+      //creacion del grupo
       $grupo = new Grupo;
       $grupo->nombre = $request['nombre'];
       $grupo->codigo_ingreso = $request['codigo_ingreso'];
       $grupo->save();
-      //dd($grupo);
+      //con ayuda de la tabla pivot se relaciona el docente con las asignaturas que va a impartir en el grupo
       foreach ($request->category as $categ) {
         $grupo->docentes()->attach($request['docente_id'],['asignatura_id' => $categ ,'responsable' => true]);
       }
+      //se pasa la variable con el id del responsable del grupo
       $docenteResponsable = Docente::find(Auth::guard('docente')->user()->id);
-      //dd($docenteResponsable);
       $grupos = Auth::guard('docente')->user()->grupos;
       return redirect()->back();
-      //return view('docente.Eventos(Maestro)')->with('grupos', $grupos);
-      //return view('docente.Grupo(Maestro)')->with('grupo', $grupo)->with('docenteResponsable', $docenteResponsable);
     }
 
     public function eliminarGrupo(Request $request){
@@ -116,12 +114,10 @@ class HomeController extends Controller
           $grp->docentes()->attach($doc->id,['asignatura_id' => $categ, ]);
         }
       }
-      //dd($doc);
       return redirect()->back();
     }
 
     public function agregarEstudiante(Request $request){
-      //dd($request);
       $est = new Estudiante;
       $est->nombre = $request->nombre;
       $est->apellido = $request->apellido;
@@ -132,12 +128,10 @@ class HomeController extends Controller
 
     public function crearComentario(Request $request){
       $coment = new Comentario;
-      //dd($request->actividad);
       $act = Actividad::find($request->actividad);
       $coment->texto = $request->texto;
       $coment->docente_id = Auth::guard('docente')->user()->id;
       $coment->actividad_id = $act->id;
-      //dd($coment);
       $coment->save();
       return redirect()->back();
     }

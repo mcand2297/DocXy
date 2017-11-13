@@ -13,7 +13,7 @@
 
 Route::get('/', function () {
     return view('InicioDocXy');
-});
+})->name('inicio');
 
 Auth::routes();
 
@@ -36,6 +36,9 @@ Route::group(['prefix' => 'docente', 'namespace' => 'Docente'], function () {
         Route::post('/agregarEstudiante', 'HomeController@agregarEstudiante')->name('docente.agregarEstudiante');
         Route::post('/agregarDocente', 'HomeController@agregarDocente')->name('docente.agregarDocente');
 
+      });
+      Route::group(['prefix' => 'mensajes'], function(){
+        route::get('/', 'HomeController@verChat')->name('docente.showChats');
       });
     });
 });
