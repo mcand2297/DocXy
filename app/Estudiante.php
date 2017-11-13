@@ -8,7 +8,7 @@ class Estudiante extends Model
 {
     protected $table="estudiantes";
 
-    protected $fillable=['nombre', 'apellido', ];
+    protected $fillable=['nombre', 'apellido', 'grupo_id', 'acudiente_id'];
 
     //un estudiante hace parte de un grupo
     public function grupo(){

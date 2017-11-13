@@ -24,7 +24,13 @@ class Grupo extends Model
 
     //un grupo posee varios docentes
     public function docentes(){
-      return $this->belongsToMany('App\Docente')->withPivot('responsable');
+      return $this->belongsToMany('App\Docente', 'asignatura_docente_grupo')
+      ->withPivot('asignatura_id', 'responsable');
+    }
+
+    public function asignaturas(){
+      return $this->belongsToMany('App\Asignatura', 'asignatura_docente_grupo')
+      ->withPivot('docente_id', 'responsable');
     }
 
     //un grupo posee varias actividades

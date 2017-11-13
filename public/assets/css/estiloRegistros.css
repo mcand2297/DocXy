@@ -1,0 +1,123 @@
+
+    #bAcudiente{
+        background: #4fc48a;
+    }
+
+    #bMaestro{
+        background: #3674d6;
+    }
+
+
+    header h2{
+        color: #fff;
+    }
+
+    #registroA, #registroM, #social{
+        border-radius: 5px;
+        background: #fff;
+        margin: auto;
+        margin-bottom: 10px;
+        max-width: 800px;
+        padding: 10px;
+        text-align: center;
+    }
+
+    #registroA ul, #registroM ul{
+        margin: 5px;
+    }
+
+    #registroA ul:last-child{
+        margin-top: 20px;
+    }
+
+    #registroM ul:last-child{
+        margin-top: 20px;
+    }
+
+        #registroA input, #registroM input{
+            border: solid 2px #e5e5e5;
+            color: #121111;
+            text-align: center;
+            width: 90%;
+            
+            -webkit-transition-duration: 0.30s;
+            -moz-transition-duration: 0.30s;
+            -ms-transition-duration: 0.30s;
+        }
+
+
+        #registroA input:focus{
+            border-color: #83b0e7;
+        }
+
+        #registroM input:focus{
+             border-color: #83b0e7;
+        }
+        
+        select{
+            margin-top: 10px;
+            border: solid 2px #e5e5e5;
+            cursor: pointer;
+            width: 90%;
+            
+            -webkit-transition-duration: 0.30s;
+            -moz-transition-duration: 0.30s;
+            -ms-transition-duration: 0.30s;
+        }
+
+        select:focus{
+            border-color:  #83b0e7;
+        }
+
+    #registroA ul h5,  #registroM ul h5{
+        font-size: 15px;
+        margin-bottom: 1px;
+    }
+
+    @media screen and (max-width:890px){/*grande*/
+        html{
+            padding: 15px;
+        }
+    }
+
+    @media screen and (max-width:690px){/*mediana*/
+        #registroA, #registroM{
+            margin-top: -10px;
+        }
+
+        #registroA button, #registroM button, #social button{
+            width: 70%;
+        }
+        
+    }
+
+    @media screen and (max-width:514px){/*pequeña*/
+        
+        html{
+            padding: 5px;
+        }
+        
+        #registroA, #registroM{
+            margin-top: -20px;
+            width: 100%;
+        }
+
+        #registro button, #social button{
+            width: 80%;
+        }
+    
+    }
+    
+    @media screen and (max-width:424px){
+        
+        #registroA, #registroM, #social{
+            padding: 10px 0px;
+        }
+    }
+    
+    @media screen and (max-width:324px){
+        
+        html{
+            padding: 0px;
+        }
+    }

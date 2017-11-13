@@ -16,7 +16,7 @@ class CreateGruposTable extends Migration
         Schema::create('grupos', function (Blueprint $table) {
             $table->increments('id');
             $table->string('codigo_ingreso');
-            $table->string('nombre');
+            $table->string('nombre')->unique();
             //$table->integer('id_docente')->unsigned();
 
             //$table->foreign('id_docente')->references('id')->on('docentes');

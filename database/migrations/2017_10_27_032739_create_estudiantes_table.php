@@ -17,7 +17,7 @@ class CreateEstudiantesTable extends Migration
             $table->increments('id');
             $table->string('nombre');
             $table->string('apellido');
-            $table->integer('acudiente_id')->unsigned();
+            $table->integer('acudiente_id')->unsigned()->nullable();
             $table->integer('grupo_id')->unsigned();
 
             $table->foreign('acudiente_id')->references('id')->on('acudientes');

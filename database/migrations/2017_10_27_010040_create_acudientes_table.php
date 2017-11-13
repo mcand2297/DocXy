@@ -15,7 +15,7 @@ class CreateAcudientesTable extends Migration
     {
         Schema::create('acudientes', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nick');
+            $table->string('nick')->unique();
             $table->string('nombre');
             $table->string('apellido');
             $table->string('email')->unique();

@@ -2,10 +2,13 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Docente extends Model
+class Docente extends Authenticatable
 {
+    use Notifiable;
+
     protected $table='docentes';
 
     protected $fillable = [
@@ -19,12 +22,14 @@ class Docente extends Model
 
     //un docente puede impartir varias asignaturas
     public function asignaturas(){
-        return $this->belongsToMany('App\Asignatura');
+        return $this->belongsToMany('App\Asignatura', 'asignatura_docente_grupo')
+        ->withPivot('grupo_id', 'responsable');
     }
 
     //un docente puede estar en varios grupos
     public function grupos(){
-      return $this->belongsToMany('App\Grupo')->withPivot('responsable');
+      return $this->belongsToMany('App\Grupo', 'asignatura_docente_grupo')
+      ->withPivot('asignatura_id','responsable');
     }
 
     //un docente hace parte de un chat

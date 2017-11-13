@@ -45,6 +45,16 @@ return [
             'driver' => 'token',
             'provider' => 'users',
         ],
+
+        'docente' => [
+            'driver' => 'session',
+            'provider' => 'docentes',
+        ],
+
+        'acudiente' => [
+            'driver' => 'session',
+            'provider' => 'acudientes',
+        ],
     ],
 
     /*
@@ -68,6 +78,16 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\User::class,
+        ],
+
+        'docentes' => [
+            'driver' => 'eloquent',
+            'model' => App\Docente::class,
+        ],
+
+        'acudientes' => [
+            'driver' => 'eloquent',
+            'model' => App\Acudiente::class,
         ],
 
         // 'users' => [
