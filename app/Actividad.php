@@ -9,8 +9,12 @@ class Actividad extends Model
     protected $table='actividades';
 
     protected $fillable=[
-      'comunicado', 'docente_id', 'id_grupo', 'created_at',
+      'comunicado', 'docente_id', 'grupo_id', 'asignatura_id', 'created_at',
     ];
+
+    public function asignatura(){
+      return $this->belongsTo('App\Asignatura');
+    }
 
     //una actividad pertenece a un grupo
     public function grupo(){

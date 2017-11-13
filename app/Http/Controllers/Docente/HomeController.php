@@ -10,6 +10,7 @@ use App\Docente;
 use App\Actividad;
 use App\Comentario;
 use App\Estudiante;
+use App\Asignatura;
 
 class HomeController extends Controller
 {
@@ -29,17 +30,21 @@ class HomeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {   $grupos = Auth::guard('docente')->user()->grupos;
+    {   $grupos = Auth::guard('docente')->user()->grupos->unique('id');//elimina duplicados
         //dd($grupos);
-        return view('docente.Eventos(Maestro)')->with('grupos', $grupos);
+        $asigs = Asignatura::orderBy('id', 'ASC') -> paginate(5);
+        //dd($grupos);
+        return view('docente.Eventos(Maestro)')->with('grupos', $grupos)->with('asigs', $asigs);
     }
 
     public function verGrupo($grupo){
       //dd($request);
+      $asigs = Asignatura::orderBy('id', 'ASC') -> paginate(5);
       $grp = Grupo::find($grupo);
+      //dd($grupo);
       //$actividades = Actividad::where('grupo_id', "=", $grp->id)->get();
       //dd($actividades);
-      foreach ($grp->docentes as $docente){
+      foreach ($grp->docentes->unique('id') as $docente){
         if($docente->pivot->responsable){
             $docenteResponsable = Docente::find($docente->id);
         }
@@ -48,21 +53,35 @@ class HomeController extends Controller
       //para comparar los docentes y encontrar cuales pertenencen al grupo
       $docentesGenerales = Docente::all();
       $grupos = Auth::guard('docente')->user()->grupos;
+      $grupos = $grupos->unique('id');//elimina duplicados
+      $asigsActv = collect();
+      //$asigsActv->push('este es un agregado');
+      foreach (Auth::guard('docente')->user()->grupos as $grupo) {
+        if($grupo->id == $grp->id){
+          $asigsActv = $grupo->asignaturas;
+        }
+      }
+      //dd($asigsActv);
       return view('docente.Grupo(Maestro)')->with('grupo', $grp)->with('docenteResponsable',
-      $docenteResponsable)->with('grupos', $grupos)->with('docentesGenerales', $docentesGenerales);
+      $docenteResponsable)->with('grupos', $grupos)->with('docentesGenerales', $docentesGenerales)->with('asigs', $asigs)
+      ->with('asigsActv', $asigsActv);
     }
 
     public function crearGrupo(Request $request){
+      //dd($request);
       $grupo = new Grupo;
       $grupo->nombre = $request['nombre'];
       $grupo->codigo_ingreso = $request['codigo_ingreso'];
       $grupo->save();
-      $grupo->docentes()->attach($request['docente_id'],['responsable' => true]);
       //dd($grupo);
+      foreach ($request->category as $categ) {
+        $grupo->docentes()->attach($request['docente_id'],['asignatura_id' => $categ ,'responsable' => true]);
+      }
       $docenteResponsable = Docente::find(Auth::guard('docente')->user()->id);
       //dd($docenteResponsable);
       $grupos = Auth::guard('docente')->user()->grupos;
-      return view('docente.Eventos(Maestro)')->with('grupos', $grupos);
+      return redirect()->back();
+      //return view('docente.Eventos(Maestro)')->with('grupos', $grupos);
       //return view('docente.Grupo(Maestro)')->with('grupo', $grupo)->with('docenteResponsable', $docenteResponsable);
     }
 
@@ -78,6 +97,7 @@ class HomeController extends Controller
       $act->comunicado = $request->comunicado;
       $act->grupo_id = $request->grupo_id;
       $act->docente_id = Auth::guard('docente')->user()->id;
+      $act->asignatura_id = $request->category;
       $act->save();
       return redirect()->back();
     }
@@ -85,13 +105,18 @@ class HomeController extends Controller
     public function agregarDocente(Request $request){
       $grp = Grupo::find($request->grupo);
       $doc = Docente::where('nick',"=", $request->nick)->first();
-      //dd($doc);
-      foreach ($grp->docentes as $docente) {
-        if($docente->id == $doc->id){
-          return redirect()->back();
+      if(!is_null($doc)){
+        //verificar si el docente ya esta agregado
+        foreach ($grp->docentes->unique('id') as $docente) {
+          if($docente->id == $doc->id){
+            return redirect()->back();
+          }
+        }
+        foreach ($request->category as $categ) {
+          $grp->docentes()->attach($doc->id,['asignatura_id' => $categ, ]);
         }
       }
-      $grp->docentes()->attach($doc->id);
+      //dd($doc);
       return redirect()->back();
     }
 

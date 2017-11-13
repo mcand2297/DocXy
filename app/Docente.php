@@ -22,12 +22,14 @@ class Docente extends Authenticatable
 
     //un docente puede impartir varias asignaturas
     public function asignaturas(){
-        return $this->belongsToMany('App\Asignatura');
+        return $this->belongsToMany('App\Asignatura', 'asignatura_docente_grupo')
+        ->withPivot('grupo_id', 'responsable');
     }
 
     //un docente puede estar en varios grupos
     public function grupos(){
-      return $this->belongsToMany('App\Grupo')->withPivot('responsable');
+      return $this->belongsToMany('App\Grupo', 'asignatura_docente_grupo')
+      ->withPivot('asignatura_id','responsable');
     }
 
     //un docente hace parte de un chat

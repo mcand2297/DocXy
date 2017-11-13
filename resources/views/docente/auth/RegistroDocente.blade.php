@@ -47,21 +47,6 @@
 					                </ul>
 
 	                        <ul>
-	                            <div class="row uniform 50%">
-	                                <div class="12u">
-	                                    <div class="select-wrapper">
-	                                        <select name="category" id="category" required>
-	                                            <option value="">Asignatura que impartes</option>
-																							@foreach($asig as $asigs)
-																								<option value="{{$asigs['id']}}">{{$asigs['nombre']}}</option>
-																							@endforeach
-	                                        </select>
-	                                    </div>
-	                                </div>
-	                            </div>
-	                        </ul>
-
-	                        <ul>
 	                            <button type="submit" class="button alt">Listo</button>
 	                        </ul>
                     </form>

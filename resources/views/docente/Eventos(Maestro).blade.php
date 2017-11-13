@@ -106,13 +106,13 @@
 				@foreach($grupos as $grupo)
 					@foreach($grupo->actividades as $actividad)
             <article class="cont post">
-							@foreach($grupo->docentes as $doc)
+							@foreach($grupo->docentes->unique('id') as $doc)
 								@if($doc->id == $actividad->docente_id)
 	                <header>
 	                    <div class="meta">
-	                        <h4 class="nombre">{{$doc->nombre}} {{$doc->apellido}}</h4>
+	                        <h4 class="nombre">{{$doc->nombre}} {{$doc->apellido}} - {{$actividad->asignatura->nombre}}</h4>
 	                        <h4 class="grupo">{{$grupo->nombre}}</h4>
-	                        <time class="publicado" datetime="2015-11-01">{{$actividad->created_at}}</time>
+													<time class="publicado" datetime="2015-11-01">{{$actividad->created_at}}</time>
 	                    </div>
 	                </header>
 								@endif
@@ -128,7 +128,7 @@
                         <ul class="comentarios">
 													@foreach($actividad->comentarios as $comentario)
 														 @if(!is_null($comentario->docente_id))
-														 		@foreach($grupo->docentes as $doc)
+														 		@foreach($grupo->docentes->unique('id') as $doc)
 																	@if($doc->id == $comentario->docente_id)
 																	  <li id="comentario">
 																			 <time>{{$comentario->created_at}}</time> <h5>{{$doc->nombre}} {{$doc->apellido}}</h5>
@@ -195,6 +195,20 @@
 												</ul>
                         <ul>
                         		<input id="codigo_ingreso" name="codigo_ingreso" type="text" placeholder="codigo de ingreso del grupo...">
+                        </ul>
+                        <ul>
+													<div class="row uniform 50%">
+	                            <div class="12u">
+	                                <div class="select-wrapper">
+	                                    <select name="category[]" id="category" multiple="multiple" required size="5">
+	                                        <option value="">Asignatura del docente</option>
+																					@foreach($asigs as $asig)
+																						<option value="{{$asig->id}}">{{$asig->nombre}}</option>
+																					@endforeach
+	                                    </select>
+	                                </div>
+	                            </div>
+	                        </div>
                         </ul>
                         <button type="submit" class="button alt"> Listo</button>
                     </form>

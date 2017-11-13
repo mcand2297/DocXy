@@ -68,30 +68,29 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $docente = new Docente;
+        /*$docente = new Docente;
         $docente->nick = $data['nick'];
         $docente->nombre = $data['nombre'];
         $docente->apellido = $data['apellido'];
         $docente->email = $data['email'];
         $docente->password = bcrypt($data['password']);
-        $docente -> save();
+        $docente -> create();
         $docente -> asignaturas() -> attach($data['category']);
+        //dd($docente);
+        return $docente;*/
 
-        return $docente;
-
-        /*return Docente::create([
+        return Docente::create([
             'nick' => $data['nick'],
             'nombre' => $data['nombre'],
             'apellido' => $data['apellido'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
-        ]);*/
+        ]);
     }
 
     public function showRegistrationForm()
-    {
-        $asig = Asignatura::orderBy('id', 'ASC') -> paginate(5);
-        return view('docente.auth.RegistroDocente', compact('asig'));
+    {  
+        return view('docente.auth.RegistroDocente');
     }
 
     protected function guard()

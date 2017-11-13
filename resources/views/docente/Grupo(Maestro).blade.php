@@ -131,19 +131,27 @@
                 <form name="crear_actividad" action="{{ route('docente.crearActividad')}}" method="post">
 									{{ csrf_field() }}
 										<input type="hidden" name="grupo_id" value="{{$grupo->id}}">
-                    <textarea name="comunicado" id="comunicado" placeholder="Comparte un nuevo evento"></textarea>
+                    <textarea name="comunicado" id="comunicado" placeholder="Comparte un nuevo evento"></textarea><br>
+										<div class="select-wrapper">
+												<select name="category" id="category" required >
+														<option value="">Asignatura de la actividad</option>
+														@foreach($asigsActv as $asig)
+															<option value="{{$asig->id}}">{{$asig->nombre}}</option>
+														@endforeach
+												</select>
+										</div><br>
                     <button class="button alt small ">Compartir</button>
                     <button class="button alt small " type="reset">Reset</button>
                 </form>
             </div>
 					@foreach($grupo->actividades as $actividad)
             <article class="cont post">
-							@foreach($grupo->docentes as $doc)
+							@foreach($grupo->docentes->unique('id') as $doc)
 								@if($doc->id == $actividad->docente_id)
 	                <header>
 	                  <div class="meta">
 	                      <h4 class="nombre">{{$doc->nombre}} {{$doc->apellido}}</h4>
-	                      <h4 class="grupo">Segundo</h4>
+	                      <h4 class="grupo">{{$actividad->asignatura->nombre}}</h4>
 	                      <time class="publicado" datetime="2015-11-01">{{$actividad->created_at}}</time>
 	                  </div>
 	                </header>
@@ -159,7 +167,7 @@
 													<ul class="comentarios">
 														@foreach($actividad->comentarios as $comentario)
 															@if(!is_null($comentario->docente_id))
-																@foreach($grupo->docentes as $docente)
+																@foreach($grupo->docentes->unique('id') as $docente)
 																	@if($docente->id == $comentario->docente_id)
 																	 <li id="comentario">
 																		 <time>{{$comentario->created_at}}</time> <h5>{{$docente->nombre}} {{$docente->apellido}}</h5>
@@ -242,7 +250,7 @@
 																			<td>{{$docente->nick}}</td>
 																			<td>{{$docente->nombre}}</td>
 																			<td>{{$docente->apellido}}</td>
-																			@foreach($grupo->docentes as $docGrupo)
+																			@foreach($grupo->docentes->unique('id') as $docGrupo)
 																				@if($docente->id == $docGrupo->id)
 																					<td>Participante</td>
 																				@else
@@ -252,7 +260,7 @@
 																	</tr>
 																@endforeach
 															@else
-																@foreach($grupo->docentes as $docente)
+																@foreach($grupo->docentes->unique('id') as $docente)
 																<tr>
 																	<td>{{$docente->nick}}</td>
 																	<td>{{$docente->nombre}}</td>
@@ -265,12 +273,24 @@
                     </div>
 
 										@if(Auth::guard('docente')->user()->id == $docenteResponsable->id)
-											<form name="agregarDocente" method="post" action="{{route('docente.agregarDocente')}}">
-												{{ csrf_field() }}
-													<input type="hidden" name="grupo" value="{{$grupo->id}}">
-													<input name="nick" type="text" placeholder="Agrega a un maestro por nick">
-													<button type="submit" class="button alt"> Listo</button>
-											</form>
+										<form name="agregarDocente" method="post" action="{{route('docente.agregarDocente')}}">
+											{{ csrf_field() }}
+												<input type="hidden" name="grupo" value="{{$grupo->id}}">
+												<input name="nick" type="text" placeholder="Agrega a un docente por nick"><br><br>
+                          <div class="row uniform 50%">
+                              <div class="12u">
+                                  <div class="select-wrapper">
+                                      <select name="category[]" id="category" multiple="multiple" size="5" required >
+                                          <option value="">Asignatura del docente</option>
+																					@foreach($asigs as $asig)
+																						<option value="{{$asig->id}}">{{$asig->nombre}}</option>
+																					@endforeach
+                                      </select>
+                                  </div>
+                              </div>
+                          </div>
+											<button type="submit" class="button alt"> Listo</button>
+										</form>
 										@endif
                 </div>
             </div>
@@ -303,7 +323,7 @@
 												{{ csrf_field() }}
 													<h5>Agrega a un estudiante</h5>
 													<input name="grupo" type="hidden" name="grupo" value="{{$grupo->id}}">
-													<input name="nombre" type="text" placeholder="Nombres">
+													<input name="nombre" type="text" placeholder="Nombres"><br><br>
 													<input name="apellido" type="text" placeholder="Apellidos">
 													<button type="submit" class="button alt"> Listo</button>
 											</form>

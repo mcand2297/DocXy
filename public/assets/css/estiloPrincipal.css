@@ -1,12 +1,12 @@
         body{
             background: #ececec;
         }
-            
+
             body::-webkit-scrollbar {
                 width: 10px;
             }
             body::-webkit-scrollbar-track{
-                
+
                 background-color: #bebebe;
             }
             body::-webkit-scrollbar-thumb{
@@ -68,7 +68,7 @@
             cursor: pointer;
             float: right;
             opacity: 0.8;
-            
+
             transition: all 1s ease;
         }
             section img{
@@ -88,7 +88,7 @@
         #sistema{
             background: #fff;
             border-radius: 5px;
-            box-shadow: 0px 2px 10px #b3b3b3; 
+            box-shadow: 0px 2px 10px #b3b3b3;
             height: 160px;
             padding: 10px;
             position: fixed;
@@ -96,9 +96,9 @@
             top: 60px;
             width: 200px;
             z-index: 2;
-            
+
             transition: all 1s ease;
-            
+
         }
 
             #sistema ul{
@@ -122,7 +122,7 @@
             #sistema li:last-child{
                margin-top: 20px;
             }
- 
+
 /*Panel para mostrar busquedas de Grupos y notificaciones*/
     #busqueda , #notific{
         background: #fff;
@@ -143,7 +143,7 @@
         font-size: 13px;
         max-width: 400px;
         max-height: 350px;
-        overflow-y: auto; 
+        overflow-y: auto;
     }
             /*Formato del scroll interno*/
             #notific::-webkit-scrollbar {
@@ -210,7 +210,7 @@
         #busqueda ul li h5{
             border-right: solid #ececec 1px;
             display: inline;
-            padding: 0px 5px 0px 5px; 
+            padding: 0px 5px 0px 5px;
         }
 
 /*-------------------------------------------  Seccion de usuario Lateral -------------------------------------------*/
@@ -235,7 +235,7 @@
                 height: 70px;
                 width: 70px;
             }
-        
+
             #contenedor h5 ,li , #grupos h4{
                 padding: 10px 7px 0px 60px;
             }
@@ -262,11 +262,11 @@
                     .notif{
                         background-color: #3674d6;
                         border-radius: 10px;
-                        color: #fff; 
+                        color: #fff;
                         float: right;
                         font-size: 13px;
                         font-weight: bold;
-                        line-height: 1;  
+                        line-height: 1;
                         margin-right: 2em;
                         min-width: 10px;
                         padding: 3px 7px;
@@ -331,7 +331,7 @@
             border-top-right-radius: 6px;
             color: white;
             height: 45px;
-            padding: 10px 20px 7px 20px; 
+            padding: 10px 20px 7px 20px;
         }
 
         .cont.post .meta .nombre{
@@ -376,15 +376,15 @@
         }
 
         #comentarios ul{
-            font-size: 12px;
-        } 
-         
+            font-size: 10px;
+        }
+
         .comentarios{
             max-height: 300px;
             overflow-y: auto;
             display: none;
         }
-            
+
             /*Formato del scroll interno*/
             .comentarios::-webkit-scrollbar {
                 width: 5px;
@@ -419,7 +419,7 @@
             resize: vertical;
         }
 
-/*-------------------------------------------  Mensajes -------------------------------------------*/ 
+/*-------------------------------------------  Mensajes -------------------------------------------*/
     #contactos, #chat{
         background: #fff;
         margin: 0px 20px 0px 20px;
@@ -465,7 +465,7 @@
 
             .remitente h1,.remitente time{
                 font-size: 15px;
-                display: inline; 
+                display: inline;
             }
 
             .remitente time{
@@ -479,7 +479,7 @@
                 text-overflow: ellipsis;
                 white-space: nowrap;
             }
-            
+
             /*Formato del scroll interno*/
 
             #remitentes::-webkit-scrollbar {
@@ -531,7 +531,7 @@
                 border-radius: 5px;
                 background-color: #3674d6;
             }
- 
+
                 #conversacion .contenido{
                     font-size: 13px;
                     line-height: 15px;
@@ -637,7 +637,7 @@
             padding-top: 100px;
             width: 96%;
         }
-        
+
 
     #infoGrupo .pic-grupo{
         border-radius: 50%;
@@ -648,7 +648,7 @@
     #infoGrupo h4, #infoGrupo h5{
         color: #fff;
     }
-    
+
     #contGrupo #estado{
         font-weight: bold;
         text-align: center;
@@ -681,7 +681,7 @@
             padding: 15px;
             resize: vertical;
         }
-            
+
             .contEvento textarea:focus{
                 border: solid 2px #4fc48a;
                 transition: all 1s ease;
@@ -733,7 +733,7 @@
                 border-top-left-radius: 5px;
                 border-top-right-radius: 5px;
                 color: #fff;
-                padding: 10px;
+                padding: 5px; //problema de que no sale la barra de seleeccion de asignatura
                 margin-bottom: 10px;
             }
 
@@ -779,7 +779,7 @@
                         max-height: 300px;
                         overflow-y: auto;
                     }
-                    
+
                     .pg form , .est form{
                         border-top: solid 1px #ececec;
                     }
@@ -830,7 +830,7 @@
             max-height: 500px;
             overflow-y: auto;
         }
-        
+
             #grupos ul::-webkit-scrollbar {
                 width: 5px;
             }
@@ -842,12 +842,12 @@
                 border-radius: 5px;
                 background-color: #3674d6;
             }
-        
+
         #conversacion{
             height: 700px;
             max-height: 700px;
         }
-        
+
         #remitentes{
             max-height: 750px;
         }
@@ -858,12 +858,12 @@
         #grupos ul{
             max-height: 400px;
         }
-        
+
         #conversacion{
             height: 650px;
             max-height: 650px;
         }
-        
+
         #remitentes{
             max-height: 680px;
         }
@@ -875,12 +875,12 @@
         #grupos ul{
             max-height: 300px;
         }
-        
+
         #conversacion{
             height: 550px;
             max-height: 550px;
         }
-        
+
         #remitentes{
             max-height: 600px;
         }
@@ -891,16 +891,16 @@
         #grupos ul{
             max-height: 200px;
         }
-        
+
         #conversacion{
             height: 430px;
             max-height: 430px;
         }
-        
+
         #remitentes{
             max-height: 470px;
         }
-            
+
     }
 
 /*Responsive ANCHO*/
@@ -908,7 +908,7 @@
     @media screen and (max-width:1280px){
 
             section img{
-                height: 30px; 
+                height: 30px;
             }
     }
 
@@ -919,19 +919,19 @@
     }
 
     @media screen and (max-width:690px){
-        
+
 
     }
 
     @media screen and (max-width:514px){
-        
-    
+
+
     }
-    
+
     @media screen and (max-width:424px){
-        
+
     }
-    
+
     @media screen and (max-width:324px){
-        
+
     }
