@@ -15,8 +15,7 @@ class CreateSolicitudesTable extends Migration
     {
         Schema::create('solicitudes', function (Blueprint $table) {
             $table->increments('id');
-            $table->boolean('aceptado')->default(false);
-            $table->string('codigo_ingreso');
+            $table->boolean('aceptado')->nullable();
             $table->integer('acudiente_id')->unsigned();
             $table->integer('grupo_id')->unsigned();
 

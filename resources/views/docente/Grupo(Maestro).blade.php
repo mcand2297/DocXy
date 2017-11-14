@@ -144,7 +144,7 @@
                     <button class="button alt small " type="reset">Reset</button>
                 </form>
             </div>
-					@foreach($grupo->actividades as $actividad)
+					@foreach($grupo->actividades->reverse() as $actividad)
             <article class="cont post">
 							@foreach($grupo->docentes->unique('id') as $doc)
 								@if($doc->id == $actividad->docente_id)

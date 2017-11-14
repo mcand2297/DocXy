@@ -28,6 +28,8 @@ Route::group(['prefix' => 'docente', 'namespace' => 'Docente'], function () {
     Route::group(['prefix' => 'home'], function(){
       Route::get('/', 'HomeController@index')->name('docente.inicio');
       Route::post('/', 'HomeController@crearGrupo')->name('docente.crearGrupo');
+      Route::put('/', 'HomeController@estadoSolicitud')->name('docente.estadoSolicitud');
+      Route::get('/agregarAcudiente/{soli_id}', 'HomeController@agregarAcudiente')->name('docente.agregarAcudiente');
       Route::group(['prefix' => 'grupo'], function(){
         Route::get('{grupo}', 'HomeController@verGrupo')->name('docente.showGroup');
         Route::delete('/eliminarGrupo', 'HomeController@eliminarGrupo')->name('docente.eliminarGrupo');

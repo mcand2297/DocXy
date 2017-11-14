@@ -37,11 +37,31 @@
         <div id="notific">
             <ul>
                 <li><img src="{{asset('assets/images/user.png')}}" /><span>Richard te ha agregado al grupo Grado Primero</span></li>
-                <li><img src="{{asset('assets/images/user.png')}}" /><span>Jorge castro ha solicitado entrar al grupo Segundo</span><button class="button alt small fit">aceptar</button> <button class="button alt small fit">rechazar</button></li>
                 <li><span>han comentado en un evento en el grupo Segundo</span></li>
-                <li><a href="Mensajes(Maestro).html">Tienes mensajes nuevos</a></li>
-                <li><img src="{{asset('assets/images/user.png')}}" /><span>Pablo Pupo ha solicitado entrar al grupo Segundo</span><button class="button alt small fit">aceptar</button> <button class="button alt small fit">rechazar</button></li>
-                <li><img src="{{asset('assets/images/user.png')}}" /><span>Richard Camacho ha solicitado entrar al grupo Segundo</span><button class="button alt small fit">aceptar</button> <button class="button alt small fit">rechazar</button></li>
+                <li><a href="{{route('docente.showChats')}}">Tienes mensajes nuevos</a></li>
+								@foreach($sols as $sol)
+										<li><img src="{{asset('assets/images/user.png')}}" />
+											<span>{{$sol->acudiente->nombre}} {{$sol->acudiente->apellido}} ha solicitado entrar al {{$sol->grupo->nombre}}</span>
+											<button class="button alt small fit" onclick="location.href = '{{route('docente.estadoSolicitud')}}';
+												event.preventDefault(); document.getElementById('aceptarSolicitud').submit();">aceptar</button>
+											<button class="button alt small fit" onclick="location.href = '{{route('docente.estadoSolicitud')}}';
+												event.preventDefault(); document.getElementById('rechazarSolicitud').submit();">rechazar</button>
+										</li>
+										<form id="aceptarSolicitud" action="{{route('docente.estadoSolicitud')}}" method="POST" style="display: none;">
+											  {{ csrf_field() }}
+												<input type="hidden" name="aceptado" value=true>
+												<input type="soli_id" name="solicitud_id" value="{{$sol->id}}">
+												<input type="hidden" name="_method" value="PUT">
+												<input type="hidden" name="_token" value="{{ csrf_token() }}">
+									  </form>
+										<form id="rechazarSolicitud" action="{{route('docente.estadoSolicitud')}}" method="POST" style="display: none;">
+											  {{ csrf_field() }}
+												<input type="hidden" name="aceptado" value=false>
+												<input type="soli_id" name="solicitud_id" value="{{$sol->id}}">
+												<input type="hidden" name="_method" value="PUT">
+												<input type="hidden" name="_token" value="{{ csrf_token() }}">
+									  </form>
+								@endforeach
             </ul>
         </div>
 
@@ -104,7 +124,7 @@
 
             <!-- Post-->
 				@foreach($grupos as $grupo)
-					@foreach($grupo->actividades as $actividad)
+					@foreach($grupo->actividades->reverse() as $actividad)
             <article class="cont post">
 							@foreach($grupo->docentes->unique('id') as $doc)
 								@if($doc->id == $actividad->docente_id)

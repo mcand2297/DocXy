@@ -12,12 +12,12 @@ class Chat extends Model
 
   //un chat tiene un docente
   public function docente(){
-    return $this->hasOne('App\Docente');
+    return $this->belongsTo('App\Docente');
   }
 
   //un chat tiene un acudiente
   public function acudiente(){
-    return $this->hasOne('App\Acudiente');
+    return $this->belongsTo('App\Acudiente');
   }
 
   //un chat posee varios mensajes

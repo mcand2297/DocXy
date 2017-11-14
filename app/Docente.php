@@ -33,7 +33,7 @@ class Docente extends Authenticatable
     }
 
     //un docente hace parte de un chat
-    public function chat(){
-      return $this->belongsTo('App\Chat');
+    public function chats(){
+      return $this->hasMany('App\Chat');
     }
 }

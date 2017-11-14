@@ -39,7 +39,7 @@ class Grupo extends Model
     }
 
     //un grupo hace parte de una solicitud
-    public function solicitud(){
-      return $this->belongsTo('App\Solicitud');
+    public function solicitudes(){
+      return $this->hasMany('App\Solicitud');
     }
 }

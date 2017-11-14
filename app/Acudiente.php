@@ -32,12 +32,12 @@ class Acudiente extends Authenticatable
   }
 
   //un acudiente participa en un chat
-  public function chat(){
-    return $this->belongsTo('App\Chat');
+  public function chats(){
+    return $this->hasMany('App\Chat');
   }
 
   //un acudiente hace parte de una solicitud
-  public function solicitud(){
-    return $this->belongsTo('App\Solicitud');
+  public function solicitudes(){
+    return $this->hasMany('App\Solicitud');
   }
 }

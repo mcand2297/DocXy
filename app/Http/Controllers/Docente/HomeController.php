@@ -11,6 +11,7 @@ use App\Actividad;
 use App\Comentario;
 use App\Estudiante;
 use App\Asignatura;
+use App\Solicitud;
 
 class HomeController extends Controller
 {
@@ -31,14 +32,33 @@ class HomeController extends Controller
      */
     public function index()
     {   $grupos = Auth::guard('docente')->user()->grupos->unique('id');//elimina duplicados
+        $solicitudes = collect();
+        foreach ($grupos as $grupo) {
+          foreach ($grupo->solicitudes as $solicitud) {
+            if(is_null($solicitud->aceptado)){
+                $solicitudes->push($solicitud);
+            }
+          }
+        }
+        //dd($solicitudes);
         $asigs = Asignatura::orderBy('id', 'ASC') -> paginate(5);
-        return view('docente.Eventos(Maestro)')->with('grupos', $grupos)->with('asigs', $asigs);
+        return view('docente.Eventos(Maestro)')->with('grupos', $grupos)
+        ->with('asigs', $asigs)->with('sols', $solicitudes);
     }
 
     public function verChat(){
       $grupos = Auth::guard('docente')->user()->grupos->unique('id');
       $asigs = Asignatura::orderBy('id', 'ASC') -> paginate(5);
-      return view('docente.Mensajes(Maestro)')->with('grupos', $grupos)->with('asigs', $asigs);
+      $solicitudes = collect();
+      foreach ($grupos as $grupo) {
+        foreach ($grupo->solicitudes as $solicitud) {
+          if(is_null($solicitud->aceptado)){
+              $solicitudes->push($solicitud);
+          }
+        }
+      }
+      return view('docente.Mensajes(Maestro)')->with('grupos', $grupos)
+      ->with('asigs', $asigs)->with('sols', $solicitudes);
     }
 
     public function verGrupo($grupo){
@@ -83,6 +103,19 @@ class HomeController extends Controller
       return redirect()->back();
     }
 
+    public function estadoSolicitud(Request $request){
+      $soli = Solicitud::find($request->solicitud_id);
+      if($request->aceptado == "true"){
+        $soli->aceptado = true;
+      }else{
+        $soli->aceptado = false;
+      }
+      //dd($soli);
+      $soli->save();
+      //redirige a la ruta que llama al controlador que agrega al acudiente al grupo
+      return redirect()->route('docente.agregarAcudiente',['soli_id'=> $soli->id]);
+    }
+
     public function eliminarGrupo(Request $request){
       $grp = Grupo::find($request->grupo);
       $grp->delete();
@@ -97,6 +130,16 @@ class HomeController extends Controller
       $act->docente_id = Auth::guard('docente')->user()->id;
       $act->asignatura_id = $request->category;
       $act->save();
+      return redirect()->back();
+    }
+
+    public function agregarAcudiente($soli_id){
+      //dd($soli_id);
+      $grupo = Solicitud::find($soli_id)->grupo;
+      $acudiente = Solicitud::find($soli_id)->acudiente;
+      if(!$grupo->acudientes->contains($acudiente)){
+        $grupo->acudientes()->attach($acudiente->id);
+      }
       return redirect()->back();
     }
 

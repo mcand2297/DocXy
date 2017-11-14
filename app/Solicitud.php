@@ -9,17 +9,16 @@ class Solicitud extends Model
     protected $table='solicitudes';
 
     protected $fillable=[
-      'aceptado', 'codigo_ingreso',
-      'acudiente_id', 'grupo_id', 'created_at',
+      'aceptado', 'acudiente_id', 'grupo_id', 'created_at',
     ];
 
     //una solicitud la hace un acudiente
     public function acudiente(){
-      return $this->hasOne('App\Acudiente');
+      return $this->belongsTo('App\Acudiente');
     }
 
     //una solicitud tiene el grupo al que se quiere ingresar
     public function grupo(){
-      return $this->hasOne('App\Grupo');
+      return $this->belongsTo('App\Grupo');
     }
 }
