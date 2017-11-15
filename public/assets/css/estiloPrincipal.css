@@ -124,7 +124,22 @@
             }
 
 /*Panel para mostrar busquedas de Grupos y notificaciones*/
-    #busqueda , #notific{
+    #busqueda{
+        background: #fff;
+        border-radius: 5px;
+        box-shadow: 0px 3px 10px #666666;
+        display: block; /*Para que la ventana no se vea*/
+        font-size: 15px;
+        min-width: 400px;
+        position: fixed;
+        right: 180px;
+        top: 60px;
+        z-index: 2;
+
+        transition: all 1s ease;
+    }
+
+    #notific{
         background: #fff;
         border-radius: 5px;
         box-shadow: 0px 3px 10px #666666;

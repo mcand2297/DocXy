@@ -12,6 +12,9 @@ use App\Comentario;
 use App\Estudiante;
 use App\Asignatura;
 use App\Solicitud;
+use App\Acudiente;
+use App\Mensaje;
+use App\Chat;
 
 class HomeController extends Controller
 {
@@ -47,8 +50,13 @@ class HomeController extends Controller
     }
 
     public function verChat(){
+      //parte que muestra los chats
+      $chats=Auth::guard('docente')->user()->chats->reverse();
+      //parte lateral que muestra los Grupo
       $grupos = Auth::guard('docente')->user()->grupos->unique('id');
+      //parte de asignaturas al mostrar la ventana de crear grupo
       $asigs = Asignatura::orderBy('id', 'ASC') -> paginate(5);
+      //parte de solicitudes al mostrar la ventana de notifiaciones
       $solicitudes = collect();
       foreach ($grupos as $grupo) {
         foreach ($grupo->solicitudes as $solicitud) {
@@ -58,7 +66,7 @@ class HomeController extends Controller
         }
       }
       return view('docente.Mensajes(Maestro)')->with('grupos', $grupos)
-      ->with('asigs', $asigs)->with('sols', $solicitudes);
+      ->with('asigs', $asigs)->with('sols', $solicitudes)->with('chats', $chats);
     }
 
     public function verGrupo($grupo){
@@ -177,5 +185,65 @@ class HomeController extends Controller
       $coment->actividad_id = $act->id;
       $coment->save();
       return redirect()->back();
+    }
+
+    public function nuevoChat(Request $req){
+      $chat= new Chat;
+        $acu= Acudiente::where('nick', "=", $req->acudiente)
+                            ->orWhere('email', '=', $req->acudiente)->first();
+        //dd($acu);
+        $chat->acudiente_id = $acu->id;
+        $chat->docente_id = Auth::guard('docente')->user()->id;
+        $chat->save();
+        return redirect()->back();
+        //return view('docente.Mensajes(Maestro)')->with('chatCompleto', $chat->id);
+    }
+
+    public function crearChat($chat_id){
+      //parte que muestra los chats
+      $chats=Auth::guard('docente')->user()->chats->reverse();
+      //parte lateral que muestra los Grupo
+      $grupos = Auth::guard('docente')->user()->grupos->unique('id');
+      //parte de asignaturas al mostrar la ventana de crear grupo
+      $asigs = Asignatura::orderBy('id', 'ASC') -> paginate(5);
+      //parte de solicitudes al mostrar la ventana de notifiaciones
+      $solicitudes = collect();
+      foreach ($grupos as $grupo) {
+        foreach ($grupo->solicitudes as $solicitud) {
+          if(is_null($solicitud->aceptado)){
+              $solicitudes->push($solicitud);
+          }
+        }
+      }
+      return view('docente.Mensajes(Maestro)')->with('grupos', $grupos)
+      ->with('asigs', $asigs)->with('sols', $solicitudes)
+      ->with('chats', $chats)->with('chatCompleto', $chat_id);
+      //return view('docente.Mensajes(Maestro)')->with('chatCompleto', $chat);
+    }
+
+    public function chatear (Request $req){
+      //parte que muestra los chats
+      $chats=Auth::guard('docente')->user()->chats->reverse();
+      //parte lateral que muestra los Grupo
+      $grupos = Auth::guard('docente')->user()->grupos->unique('id');
+      //parte de asignaturas al mostrar la ventana de crear grupo
+      $asigs = Asignatura::orderBy('id', 'ASC') -> paginate(5);
+      //parte de solicitudes al mostrar la ventana de notifiaciones
+      $solicitudes = collect();
+      foreach ($grupos as $grupo) {
+        foreach ($grupo->solicitudes as $solicitud) {
+          if(is_null($solicitud->aceptado)){
+              $solicitudes->push($solicitud);
+          }
+        }
+      }
+      $mensaje = new Mensaje;
+      $mensaje->texto = $req->input('texto');
+      $mensaje->docente_id = $req->input('docente');
+      $mensaje->chat_id = $req->input('chat');
+      $mensaje->save();
+      return view('docente.Mensajes(Maestro)')->with('grupos', $grupos)
+      ->with('asigs', $asigs)->with('sols', $solicitudes)
+      ->with('chats', $chats)->with('chatCompleto', $mensaje->chat_id);
     }
 }

@@ -24,6 +24,11 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('acudiente.home');
+        return view('acudiente.Eventos(Acudiente)');
+    }
+
+    public function mensajes()
+    {        
+        return view('acudiente.Mensajes(Acudiente)');
     }
 }

@@ -117,135 +117,69 @@
 
 
             <!-- Cuerpo de contenedor para mostrar los contactos-->
+
             <div id="contactos">
-
-            <form class="input-button">
-                <input type="text" required>
-                <button class="button alt">Buscar</button>
+            <form class="input-button" method="POST" action="{{route('docente.home.mensajes.nuevoChat')}}">
+							{{ csrf_field() }}
+								<input type="text" name="acudiente" required>
+                <button  type="submit" class="button alt">Buscar</button>
             </form>
-
             <div id="remitentes">
-
-
-                <div class="remitente">
-                    <img src="images/user.png" >
-                    <h1>Nombre del usuario</h1>
-                    <time>8:36</time>
-                    <p>este es un mensaje corto.</p>
-
-                </div>
-
-                <div class="remitente">
-                    <img src="images/user.png" >
-                    <h1>Nombre del usuario</h1>
-                    <time>8:36</time>
-                    <p>este es un mensaje largo a ver si se desborda el contenedor de dicho mensaje.</p>
-
-                </div>
-
-                <div class="remitente">
-                    <img src="images/user.png" >
-                    <h1>Nombre del usuario</h1>
-                    <time>8:36</time>
-                    <p>este es un mensaje largo a ver si se desborda el contenedor de dicho mensaje.</p>
-
-                </div>
-
-                <div class="remitente">
-                    <img src="images/user.png" >
-                    <h1>Nombre del usuario</h1>
-                    <time>8:36</time>
-                    <p>este es un mensaje largo a ver si se desborda el contenedor de dicho mensaje.</p>
-
-                </div>
+							@if(!is_null($chats))
+								@foreach($chats as $chat)
+									<div class="remitente">
+											<a href="{{ url('docente/home/mensajes/chat', array('Chat'=>$chat->id)) }}"><img src="{{asset('assets/images/user.png')}}">
+											<h1>{{$chat->acudiente->nombre}} {{$chat->acudiente->apellido}}</h1></a>
+											<time>{{$chat->create_at}}</time>
+											@if(!is_null($chat->mensajes->last()))
+												<p>{{$chat->mensajes->last()->texto}}</p>
+											@endif
+									</div>
+								@endforeach
+							@endif
             </div>
-
-        </div>
+            </div>
 
             <!-- contenedor para ver la conversacion -->
+
+
+
             <div id="chat">
-
-                <div id="header-chat">Pablo Pupo</div>
-                <div id="conversacion">
-
-                <div class="mensaje remit">
-                    <div class="clip1"></div>
-                    <div class="contenido">
-                        <p>Este es el texto que se va a visualizar en el bloque de un mensaje. del amigo que esta escribiendo a distancia, por lo que veo se ve bien, sigo escribiendo, falta hacerlo responsive.</p>
-                        <time>10:57</time>
-                    </div>
-                </div>
-
-                <div class="mensaje prop">
-                    <div class="clip2"></div>
-                    <div class="contenido">
-                        <p>Este es el texto corto del que envia.</p>
-                        <time>10:59</time>
-                    </div>
-                </div>
-
-                <div class="mensaje remit">
-                    <div class="clip1"></div>
-                    <div class="contenido">
-                        <p>Este es el texto corto del que recibe.</p>
-                        <time>10:57</time>
-                    </div>
-                </div>
-
-                 <div class="mensaje remit">
-                    <div class="clip1"></div>
-                    <div class="contenido">
-                        <p>Este es el texto que se va a visualizar en el bloque de un mensaje. del amigo que esta escribiendo a distancia, por lo que veo se ve bien, sigo escribiendo.</p>
-                        <time>10:57</time>
-                    </div>
-                </div>
-
-                 <div class="mensaje remit">
-                    <div class="clip1"></div>
-                    <div class="contenido">
-                        <p>Este es el texto que se va a visualizar en el bloque de un mensaje. del amigo que esta escribiendo a distancia, por lo que veo se ve bien, sigo escribiendo.</p>
-                        <time>10:57</time>
-                    </div>
-                </div>
-
-                <div class="mensaje prop">
-                    <div class="clip2"></div>
-                    <div class="contenido">
-                        <p>Este es el texto que se va a visualizar en el bloque de un mensaje. este responde</p>
-                        <time>10:59</time>
-                    </div>
-                </div>
-
-                <div class="mensaje prop">
-                    <div class="clip2"></div>
-                    <div class="contenido">
-                        <p>Este es el texto que se va a visualizar en el bloque de un mensaje. este responde</p>
-                        <time>10:59</time>
-                    </div>
-                </div>
-
-                <div class="mensaje prop">
-                    <div class="clip2"></div>
-                    <div class="contenido">
-                        <p>Este es el texto que se va a visualizar en el bloque de un mensaje. este responde</p>
-                        <time>10:59</time>
-                    </div>
-                </div>
-
-                <div class="mensaje prop">
-                    <div class="clip2"></div>
-                    <div class="contenido">
-                        <p>Este es el texto que se va a visualizar en el bloque de un mensaje. este responde</p>
-                        <time>10:59</time>
-                    </div>
-                </div>
-            </div>
-
-            <form class="input-button">
-                <textarea placeholder="Escribir mensaje..."></textarea>
-                <button class="button alt">Enviar</button>
-            </form>
-
+							@if(isset($chatCompleto))
+								@foreach($chats as $chat)
+									@if($chat->id == $chatCompleto)
+		                <div id="header-chat">acudiente nombre acudiente apellido</div>
+		                <div id="conversacion">
+										@foreach($chat->mensajes as $mnj)
+											@if(!is_null($mnj->docente_id))
+											<div class="mensaje prop">
+													<div class="clip2"></div>
+													<div class="contenido">
+															<p>{{$mnj->texto}}</p>
+															<time>{{$mnj->created_at}}</time>
+													</div>
+											</div>
+											@else
+											<div class="mensaje remit">
+			                    <div class="clip1"></div>
+			                    <div class="contenido">
+			                        <p>{{$mnj->texto}}</p>
+			                        <time>{{$mnj->created_at}}</time>
+			                    </div>
+			                </div>
+											@endif
+										@endforeach
+									@endif
+								@endforeach
+								</div>
+								<form method="post" class="input-button" action="{{ route('docente.home.mensajes.chatear')}}">
+									{{ csrf_field() }}
+										<input type="hidden" name="docente" value="{{ Auth::guard('docente')->user()->id }}">
+                    <input type="hidden" name="chat" value="{{$chatCompleto}}">
+                    <textarea placeholder="Escribir mensaje..." name="texto"></textarea>
+                    <button type="submit" class="button alt">Enviar</button>
+                </form>
+							@endif
         </div>
 
         <!-- Ventana Modal Crear grupo-->

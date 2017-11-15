@@ -41,6 +41,9 @@ Route::group(['prefix' => 'docente', 'namespace' => 'Docente'], function () {
       });
       Route::group(['prefix' => 'mensajes'], function(){
         route::get('/', 'HomeController@verChat')->name('docente.showChats');
+        Route::post('/nuevoChat', 'HomeController@nuevoChat')->name('docente.home.mensajes.nuevoChat');
+        Route::get('/chat/{Chat}', 'HomeController@crearChat')->name('docente.home.mensajes.chat');
+        Route::post('chatear', 'HomeController@chatear')->name('docente.home.mensajes.chatear');
       });
     });
 });
@@ -51,5 +54,14 @@ Route::group(['prefix' => 'acudiente', 'namespace' => 'Acudiente'], function () 
     Route::post('logout', 'Auth\LoginController@logout')->name('acudiente.logout');
     Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('acudiente.showRegistrationForm');
     Route::post('register', 'Auth\RegisterController@register')->name('acudiente.register');
-    Route::get('home', 'HomeController@index');
+    Route::get('home', 'HomeController@index')->name('acudiente.home');
+    Route::get('home/comentario/{Acudiente}/{Docente}/{Actividad}', 'ComentarioController@create')->name('acudiente.home.comentario');
+    Route::get('home/grupo/{Grupo}', 'GrupoController@index')->name('acudiente.home.grupo');
+    Route::get('home/mensajes', 'HomeController@mensajes');
+    Route::get('home/buscar', 'GrupoController@buscaGrupo')->name('acudiente.home.buscar');
+    Route::get('home/solicitud/{Grupo}/{Acudiente}', 'SolicitudController@crear')->name('acudiente.home.solicitud');
+    Route::get('home/estudiante/{Acudiente}/{IdEstu}', 'GrupoController@estudiante')->name('acudiente.home.estudiante');
+    Route::get('home/chat/{Chat}', 'ChatController@index')->name('acudiente.home.chat');
+    Route::get('home/chatear/{Acudiente}/{Chat}', 'ChatController@chatear')->name('acudiente.home.chatear');
+    Route::post('home/nuevoChat', 'ChatController@nuevoChat')->name('acudiente.home.nuevoChat');
 });

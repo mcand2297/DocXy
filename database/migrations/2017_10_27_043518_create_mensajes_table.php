@@ -17,8 +17,8 @@ class CreateMensajesTable extends Migration
             $table->increments('id');
             $table->text('texto');
             $table->integer('chat_id')->unsigned();
-            $table->integer('docente_id')->unsigned()->default(0);
-            $table->integer('acudiente_id')->unsigned()->default(0);
+            $table->integer('docente_id')->unsigned()->nullable();
+            $table->integer('acudiente_id')->unsigned()->nullable();
 
             $table->foreign('chat_id')->references('id')->on('chats')->onDelete('cascade');
             $table->foreign('docente_id')->references('id')->on('docentes');

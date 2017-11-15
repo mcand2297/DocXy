@@ -29,16 +29,6 @@
         </header>
 
         <!-- Ventana de notificaciones -->
-        <div id="notific">
-            <ul>
-                <li><img src="{{asset('assets/images/user.png')}}" /><span>Richard te ha agregado al grupo Grado Primero</span></li>
-                <li><img src="{{asset('assets/images/user.png')}}" /><span>Jorge castro ha solicitado entrar al grupo Segundo</span><button class="button alt small fit">aceptar</button> <button class="button alt small fit">rechazar</button></li>
-                <li><span>han comentado en un evento en el grupo Segundo</span></li>
-                <li><a href="Mensajes(Maestro).html">Tienes mensajes nuevos</a></li>
-                <li><img src="{{asset('assets/images/user.png')}}" /><span>Pablo Pupo ha solicitado entrar al grupo Segundo</span><button class="button alt small fit">aceptar</button> <button class="button alt small fit">rechazar</button></li>
-                <li><img src="{{asset('assets/images/user.png')}}" /><span>Richard Camacho ha solicitado entrar al grupo Segundo</span><button class="button alt small fit">aceptar</button> <button class="button alt small fit">rechazar</button></li>
-            </ul>
-        </div>
 
         <div id="sistema">
             <ul>
@@ -135,7 +125,7 @@
 										<div class="select-wrapper">
 												<select name="category" id="category" required >
 														<option value="">Asignatura de la actividad</option>
-														@foreach($asigsActv as $asig)
+														@foreach($asigsActv->unique('id') as $asig)
 															<option value="{{$asig->id}}">{{$asig->nombre}}</option>
 														@endforeach
 												</select>
