@@ -5,47 +5,47 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width , user-scalable=no">
         <meta name="theme-color" content="#44a977" />
-        
+
         <link href="{{asset('assets/images/logo/logo.png')}}" type="image/png" rel="shortcut icon">
-        
+
       	<title>DocXy Acudientes</title>
-        
+
 		<link rel="stylesheet" href="{{asset('assets/css/main.css')}}" />
         <link rel="stylesheet" href="{{asset('assets/css/estiloPrincipal.css')}}" />
         <link rel="stylesheet" href="{{asset('assets/icomoon/iconos.css')}}">
-        
+
         <script src="{{asset('assets/js/jquery.min.js')}}"></script>
         <script src="{{asset('assets/js/funciones.js')}}"></script>
 	</head>
-    
+
     <body>
-        
+
         <!-- Header -->
         <header id="headerp">
             <h1>DocXy Acudientes</h1>
 
             <section>
                 <span id="menu" class="icon-circle-left"></span>
-            </section> 
+            </section>
 
             <!--<form id="buscagrupo">
                 <input type="text" class=""><button type="submit" class="button alt">Buscar</button>
             </form>-->
         </header>
-        
+
         <!-- Ventana de la busqueda de un grupo -->
         <div id="busqueda">
             @if (isset($bG))
             <ul>
                 <li><img src="{{asset('assets/images/group-green.png')}}" ><h5>Primer grado: Olga Gonzales</h5> <h5>Pablo Pupo</h5> <button class="button alt small entrar">Entrar</button></li>
-                
+
                 <li><img src="{{asset('assets/images/group-red.png')}}" ><h5>Universidad de Cartgena</h5> <h5>Jorge Castro</h5> <button class="button alt small entrar">Entrar</button></li>
-                
+
                 <li><img src="{{asset('assets/images/group-orange.png')}}" ><h5>Grupo</h5> <h5>Profesor</h5> <button class="button alt small entrar">Entrar</button></li>
             </ul>
             @endif
         </div>
-        
+
         <!-- Menu de opciones desplegable -->
         <div id="sistema">
             <ul>
@@ -61,10 +61,10 @@
                 <li>Acerca de</li>
             </ul>
         </div>
-        
+
         <!-- Seccion lateral -->
         <aside id="usuario">
-            
+
             <div id="infoPerfil">
                 <div id="user">
                     <img src="{{asset('assets/images/user.png')}}" >
@@ -76,17 +76,17 @@
                     <a href="/acudiente/home" class="boton">
                         <h5>Eventos</h5>
                     </a>
-                    
+
                     <a href="/acudiente/home/mensajes" class="active boton">
-                        <h5>Mensajes 
+                        <h5>Mensajes
                             <span class="notif">5</span>
                         </h5>
                     </a>
                 </div>
-                
+
                 <div id="grupos">
                     <h4>Mis Grupos</h4>
-                     <?php 
+                     <?php
                         use App\Http\Controllers\Acudiente\GrupoController;
                         $s=Auth::guard('acudiente')->user()->grupos;
                         $user=Auth::guard('acudiente')->user()->id;
@@ -95,16 +95,22 @@
                     ?>
 
                     <ul>
-                        @foreach ($s as $ss)
-                        <li><a href="{{ url('acudiente/home/grupo', array('Grupo'=>$ss)) }}"><img src="{{asset('assets/images/group-red.png')}}"/>{{$ss->nombre}}</a> </li><!-- modificar cuando se agregue a la base de datos -->
-                        @endforeach
+											@if(count($s)!=0)
+												@foreach ($s as $ss)
+												<a href="{{ url('acudiente/home/grupo', array('Grupo'=>$ss)) }}">
+													<li><img src="{{asset('assets/images/group-red.png')}}"/>{{$ss->nombre}}</li><!-- modificar cuando se agregue a la base de datos -->
+												</a>
+												@endforeach
+											@else
+											<h4>No tiene grupos</h4>
+											@endif
                     </ul>
                 </div>
             </div>
         </aside>
-        
-        
-        
+
+
+
             <!-- Cuerpo de contenedor para mostrar los contactos-->
             <div id="contactos">
             <form class="input-button" method="POST" action="{{route('acudiente.home.nuevoChat')}}">
@@ -114,7 +120,7 @@
             <div id="remitentes">
                 @foreach($chat as $chats)
                     <?php $buscarDocente = GrupoController::buscarDocente($chats->docente_id);
-                    $buscarMesaje = GrupoController::buscarMensaje($chats->id)->reverse(); 
+                    $buscarMesaje = GrupoController::buscarMensaje($chats->id)->reverse();
                     $nume=0?>
                     @foreach($buscarMesaje as $mess)
                         @if($chats->id == $mess->chat_id)
@@ -122,25 +128,27 @@
                         @endif
                         @if($nume!=1)
                         @else
+												<a href="{{ url('acudiente/home/chat', array('Chat'=>$chats->id)) }}">
                         <div class="remitente">
-                            <a href="{{ url('acudiente/home/chat', array('Chat'=>$chats->id)) }}"><img src="{{asset('assets/images/user.png')}}"></a>
+                            <img src="{{asset('assets/images/user.png')}}">
                             <h1>{{$buscarDocente->nombre}} {{$buscarDocente->apellido}}</h1>
                             <time>{{$buscarDocente->create_at}}</time>
-                            <p>{{$mess->texto}}</p>                    
+                            <p>{{$mess->texto}}</p>
                         </div>
+												</a>
                         @endif
                     @endforeach
                 @endforeach
-            </div>                
+            </div>
         </div>
-        
+
             <!-- contenedor para ver la conversacion -->
             <div id="chat">
                 @if(isset($chatCompleto))
                  @foreach($chat as $chats)
                  @if($chats->id == $chatCompleto)
                  <?php $buscarDocente = GrupoController::buscarDocente($chats->docente_id);
-                    $buscarMesaje = GrupoController::buscarMensaje($chats->id); 
+                    $buscarMesaje = GrupoController::buscarMensaje($chats->id);
                     $chatid=$chats->id;?>
                 <div id="header-chat">{{$buscarDocente->nombre}} {{$buscarDocente->apellido}}</div>
                 <div id="conversacion">
@@ -166,20 +174,20 @@
                 @endif
                 @endforeach
                 @endif
-            </div>         
+            </div>
                 <form method="get" class="input-button" action="{{ url('acudiente/home/chatear', array('Acudiente'=>$user, 'Chat'=>$chatid)) }}">
                     <textarea placeholder="Escribir mensaje..." name="texto"></textarea>
                     <button class="button alt">Enviar</button>
-                </form>       
+                </form>
         </div>
-            
-        
-        <!-- Ventana Modal -->  
+
+
+        <!-- Ventana Modal -->
         <div class="cuerpoModalAC">
-        
+
             <div id="modalAC">
                 <div id="modalHeader">¿Quieres unirte a este grupo? <span id="cross" class="icon-cross"></span> </div>
-                
+
                 <div id="modalBody">
                     <div id="info">
                         <img src="{{asset('assets/images/group-green.png')}}" >
@@ -191,9 +199,9 @@
                     <form><input type="text" required><button class="button alt">Confirmar</button></form>
                 </div>
             </div>
-            
+
         </div>
-        
+
     </body>
-    
+
 </html>

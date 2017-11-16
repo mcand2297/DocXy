@@ -35,7 +35,7 @@
          <!-- Ventana de notificaciones -->
         <div id="notific">
             <ul>
-                <li><img src="images/user.png" /><span>Richard te ha agregado al grupo Grado Primero</span></li>
+                <li><img src="{{asset('assets/images/user.png')}}" /><span>Richard te ha agregado al grupo Grado Primero</span></li>
                 <li><span>han comentado en un evento en el grupo Segundo</span></li>
                 <li><a href="{{route('docente.showChats')}}">Tienes mensajes nuevos</a></li>
 								@foreach($sols as $sol)
@@ -102,9 +102,9 @@
 										<ul>
 											@if(count($grupos)!=0)
 											@foreach($grupos as $index)
-											<li>
-												<a href="{{ route('docente.showGroup', ['grupo' => $index])}}"><img  src="{{asset('assets/images/group-green.png')}}" >{{$index->nombre}}</a>
-											</li>
+											<a href="{{ route('docente.showGroup', ['grupo' => $index])}}">
+											<li><img  src="{{asset('assets/images/group-green.png')}}" >{{$index->nombre}}</li>
+											</a>
 											@endforeach
 											@else
 											<h4>No tiene grupos</h4>
@@ -127,14 +127,16 @@
             <div id="remitentes">
 							@if(!is_null($chats))
 								@foreach($chats as $chat)
+								<a href="{{ url('docente/home/mensajes/chat', array('Chat'=>$chat->id)) }}">
 									<div class="remitente">
-											<a href="{{ url('docente/home/mensajes/chat', array('Chat'=>$chat->id)) }}"><img src="{{asset('assets/images/user.png')}}">
-											<h1>{{$chat->acudiente->nombre}} {{$chat->acudiente->apellido}}</h1></a>
+											<img src="{{asset('assets/images/user.png')}}">
+											<h1>{{$chat->acudiente->nombre}} {{$chat->acudiente->apellido}}</h1>
 											<time>{{$chat->create_at}}</time>
 											@if(!is_null($chat->mensajes->last()))
 												<p>{{$chat->mensajes->last()->texto}}</p>
 											@endif
 									</div>
+								</a>
 								@endforeach
 							@endif
             </div>

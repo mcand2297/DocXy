@@ -95,9 +95,15 @@
                         $user=Auth::guard('acudiente')->user()->id;
                     ?>
                     <ul>
-                        @foreach ($s as $ss)
-                        <li><a href="{{ url('acudiente/home/grupo', array('Grupo'=>$ss)) }}"><img src="{{asset('assets/images/group-yellow.png')}}"/>{{$ss->nombre}}</a> </li><!-- modificar cuando se agregue a la base de datos -->
-                        @endforeach
+											@if(count($s)!=0)
+												@foreach ($s as $ss)
+												<a href="{{ url('acudiente/home/grupo', array('Grupo'=>$ss)) }}">
+													<li><img src="{{asset('assets/images/group-red.png')}}"/>{{$ss->nombre}}</li><!-- modificar cuando se agregue a la base de datos -->
+												</a>
+												@endforeach
+											@else
+											<h4>No tiene grupos</h4>
+											@endif
                     </ul>
                 </div>
             </div>

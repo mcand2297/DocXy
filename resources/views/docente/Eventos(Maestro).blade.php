@@ -103,9 +103,9 @@
                     <ul>
 												@if(count($grupos)!=0)
 												@foreach($grupos as $index)
-                        <li>
-                        	<a href="{{route('docente.showGroup', array('grupo'=>$index))}}"><img  src="{{asset('assets/images/group-green.png')}}" >{{$index->nombre}}</a>
-                        </li>
+												<a href="{{ route('docente.showGroup', ['grupo' => $index])}}">
+												<li><img  src="{{asset('assets/images/group-green.png')}}" >{{$index->nombre}}</li>
+												</a>
 												@endforeach
 												@else
 												<h4>No tiene grupos</h4>

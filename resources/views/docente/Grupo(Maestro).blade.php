@@ -69,9 +69,9 @@
                     <ul>
 											@if(count($grupos)!=0)
 											@foreach($grupos as $index)
-											<li>
-												<a href="{{ route('docente.showGroup', ['grupo' => $index])}}"><img  src="{{asset('assets/images/group-green.png')}}" >{{$index->nombre}}</a>
-											</li>
+											<a href="{{ route('docente.showGroup', ['grupo' => $index])}}">
+											<li><img  src="{{asset('assets/images/group-green.png')}}" >{{$index->nombre}}</li>
+											</a>
 											@endforeach
 											@else
 											<h4>No tiene grupos</h4>
@@ -241,7 +241,9 @@
 																			<td>{{$docente->nombre}}</td>
 																			<td>{{$docente->apellido}}</td>
 																			@foreach($grupo->docentes->unique('id') as $docGrupo)
-																				@if($docente->id == $docGrupo->id)
+																				@if($docente->id == $docenteResponsable->id)
+																					<td>Docente de grupo</td>
+																				@elseif($docente->id == $docGrupo->id)
 																					<td>Participante</td>
 																				@else
 																					<td></td>
@@ -255,6 +257,9 @@
 																	<td>{{$docente->nick}}</td>
 																	<td>{{$docente->nombre}}</td>
 																	<td>{{$docente->apellido}}</td>
+																	@if($docente->id == $docenteResponsable->id)
+																		<td>Docente de grupo</td>
+																	@endif
 																</tr>
 																@endforeach
 															@endif
@@ -300,9 +305,12 @@
                             <tbody>
 															@foreach($grupo->estudiantes as $estudiante)
 																<tr>
-																		<td>{{$estudiante->nombre}}</td>
-																		<td>{{$estudiante->apellido}}</td>
-																		<td>Acudiente</td>
+																		<td>{{$estudiante->nombre}} {{$estudiante->apellido}}</td>
+																		@if(!is_null($estudiante->acudiente))
+																			<td>{{$estudiante->acudiente->nick}}</td>
+																			<td>{{$estudiante->acudiente->nombre}} {{$estudiante->acudiente->apellido}}</td>
+																			<td>{{$estudiante->acudiente->email}}</td>
+																		@endif
 																</tr>
 															@endforeach
                             </tbody>
