@@ -32,6 +32,10 @@ class Docente extends Authenticatable
       ->withPivot('asignatura_id','responsable');
     }
 
+    public function comentarios(){
+      return $this->hasMany('App\Comentario');
+    }
+
     //un docente hace parte de un chat
     public function chats(){
       return $this->hasMany('App\Chat');

@@ -736,11 +736,11 @@
         }
 
         .cuerpoModalAC #modalAC , .cuerpoModalDO #modalDO_cng{
-            margin-top: 10%;
+            margin-top: 5%;//subirlo un poco
         }
 
         .cuerpoModalDO #modalDO_pg , .cuerpoModalDO #modalDO_est{
-            margin-top: 5%;
+            margin-top: 1%;
         }
 
             #modalAC #modalHeader , #modalDO_cng #modalHeader , #modalDO_pg #modalHeader , #modalDO_est #modalHeader{

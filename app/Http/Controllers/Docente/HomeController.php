@@ -34,19 +34,20 @@ class HomeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {   $grupos = Auth::guard('docente')->user()->grupos->unique('id');//elimina duplicados
-        $solicitudes = collect();
-        foreach ($grupos as $grupo) {
-          foreach ($grupo->solicitudes as $solicitud) {
-            if(is_null($solicitud->aceptado)){
-                $solicitudes->push($solicitud);
-            }
+    {
+      $grupos = Auth::guard('docente')->user()->grupos->unique('id');//elimina duplicados
+      $solicitudes = collect();
+      foreach ($grupos as $grupo) {
+        foreach ($grupo->solicitudes as $solicitud) {
+          if(is_null($solicitud->aceptado)){
+            $solicitudes->push($solicitud);
           }
         }
+      }
         //dd($solicitudes);
-        $asigs = Asignatura::orderBy('id', 'ASC') -> paginate(5);
-        return view('docente.Eventos(Maestro)')->with('grupos', $grupos)
-        ->with('asigs', $asigs)->with('sols', $solicitudes);
+      $asigs = Asignatura::orderBy('id', 'ASC') -> paginate(5);
+      return view('docente.Eventos(Maestro)')->with('grupos', $grupos)
+      ->with('asigs', $asigs)->with('sols', $solicitudes);
     }
 
     public function verChat(){
@@ -84,11 +85,17 @@ class HomeController extends Controller
       $grupos = $grupos->unique('id');//elimina duplicados
       //para ver cuales asignaturas imparte un docente en el grupo
       $asigsActv = collect();
-      foreach (Auth::guard('docente')->user()->grupos as $grupo) {
-        if($grupo->id == $grp->id){
-          $asigsActv = $grupo->asignaturas;
+      //recorrer las asignaturas de casa grupo del docente
+      foreach (Auth::guard('docente')->user()->grupos->unique('id') as $gpo) {
+        if($gpo->id == $grp->id){
+          foreach ($gpo->asignaturas as $asig) {
+            if($asig->pivot->docente_id == Auth::guard('docente')->user()->id){
+              $asigsActv->push($asig);//agrega al final la asignatura en que el id docente en la tabla pivot coincide con el docente
+            }
+          }
         }
       }
+      //dd($asigsActv);
       //para mostrar la vista del grupo
       return view('docente.Grupo(Maestro)')->with('grupo', $grp)->with('docenteResponsable',
       $docenteResponsable)->with('grupos', $grupos)->with('docentesGenerales', $docentesGenerales)->with('asigs', $asigs)

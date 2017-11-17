@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 
-<html>
+<html  lang="{{ app()->getLocale() }}">
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width , user-scalable=no">
@@ -133,23 +133,15 @@
                         <ul class="comentarios">
                             @foreach($act->comentarios as $comentario)
 	                            @if(!is_null($comentario->docente_id))
-		                            @foreach($grupo->docentes->unique('id') as $docente)
-			                            @if($docente->id == $comentario->docente_id)
-			                                <li id="comentario">
-			                                    <time>{{$comentario->created_at}}</time> <h5>{{$docente->nombre}} {{$docente->apellido}}</h5>
-			                                    <p>{{$comentario->texto}}</p>
-			                                </li>
-			                            @endif
-	                            	@endforeach
+                                <li id="comentario">
+                                    <time>{{$comentario->created_at}}</time> <h4>{{$comentario->docente->nombre}} {{$comentario->docente->apellido}}</h4>
+                                    <p>{{$comentario->texto}}</p>
+                                </li>
 	                            @else
-		                            @foreach($grupo->acudientes as $acudiente)
-			                            @if($acudiente->id == $comentario->acudiente_id)
-			                                <li id="comentario">
-			                                    <time>{{$comentario->created_at}}</time> <h5>{{$acudiente->nombre}} {{$acudiente->apellido}}</h>
-			                                    <p>{{$comentario->texto}}</p>
-			                                </li>
-			                            @endif
-		                            @endforeach
+                                <li id="comentario">
+                                    <time>{{$comentario->created_at}}</time> <h4>{{$comentario->acudiente->nombre}} {{$comentario->acudiente->apellido}}</h4>
+                                    <p>{{$comentario->texto}}</p>
+                                </li>
 	                            @endif
                             @endforeach
                         </ul>
@@ -209,6 +201,8 @@
 																<td>{{$docente->apellido}}</td>
 																@if($docente->id == $docenteResponsable->id)
 																	<td>Docente de grupo</td>
+																@else
+																	<td></td>
 																@endif
 															</tr>
 															@endforeach
@@ -232,15 +226,16 @@
                     <div id="tabla_est" class="table-wrapper">
                         <table>
                             <tbody>
-                                @foreach($estudiante as $estu)
-                                @if(is_null($estu->acudiente_id))
-                                <?php $idEstu=$estu->id; ?>
-                                    <tr>
-                                        <td>{{$estu->nombre}} {{$estu->apellido}}</td>
-                                        <td><a href="{{ url('acudiente/home/estudiante', array('Acudiente'=>$user, 'Id'=>$idEstu)) }}"><img src="{{asset('assets/images/agregar.png')}}" width="30" height="30"/></a><td>
-                                    </tr>
-                                @endif
+															@if(!is_null($grupo->estudiantes))
+                                @foreach($grupo->estudiantes as $estu)
+																 @if(is_null($estu->acudiente_id))
+                                  <tr>
+                                      <td>{{$estu->nombre}} {{$estu->apellido}}</td>
+                                      <td><a href="{{ url('acudiente/home/estudiante', array('Acudiente'=>$user, 'Id'=>$estu->id)) }}"><img src="{{asset('assets/images/agregar.png')}}" width="30" height="30"/></a><td>
+                                  </tr>
+																	@endif
                                 @endforeach
+															@endif
                             </tbody>
                         </table>
                     </div>

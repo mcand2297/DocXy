@@ -24,10 +24,10 @@ class ChatController extends Controller
     public function nuevoChat(Request $req){
         $chat= new Chat;
         $buscar=$req->input('docente');
-        $docen= Docente::where('nombre', '=', $buscar)
-                            ->orWhere('apellido', '=', $buscar)->get();
+        $docen= Docente::where('nick', '=', $buscar)
+                            ->orWhere('email', '=', $buscar)->get();
         foreach ($docen as $doc) {
-            $chat->docente_id=$doc->id;   
+            $chat->docente_id=$doc->id;
         }
         $chat->acudiente_id=Auth::guard('acudiente')->user()->id;
         $chat->save();

@@ -39,7 +39,7 @@
             color: #121111;
             text-align: center;
             width: 90%;
-            
+
             -webkit-transition-duration: 0.30s;
             -moz-transition-duration: 0.30s;
             -ms-transition-duration: 0.30s;
@@ -53,13 +53,13 @@
         #registroM input:focus{
              border-color: #83b0e7;
         }
-        
+
         select{
             margin-top: 10px;
             border: solid 2px #e5e5e5;
             cursor: pointer;
-            width: 90%;
-            
+            width: 100%;
+
             -webkit-transition-duration: 0.30s;
             -moz-transition-duration: 0.30s;
             -ms-transition-duration: 0.30s;
@@ -88,15 +88,15 @@
         #registroA button, #registroM button, #social button{
             width: 70%;
         }
-        
+
     }
 
     @media screen and (max-width:514px){/*pequeña*/
-        
+
         html{
             padding: 5px;
         }
-        
+
         #registroA, #registroM{
             margin-top: -20px;
             width: 100%;
@@ -105,18 +105,18 @@
         #registro button, #social button{
             width: 80%;
         }
-    
+
     }
-    
+
     @media screen and (max-width:424px){
-        
+
         #registroA, #registroM, #social{
             padding: 10px 0px;
         }
     }
-    
+
     @media screen and (max-width:324px){
-        
+
         html{
             padding: 0px;
         }

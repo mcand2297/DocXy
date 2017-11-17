@@ -14,14 +14,13 @@ class GrupoController extends Controller
     	$group= Grupo::find($grupo);
         //$buscaGrupo= $req->input('texto');
         //$bG= Grupo::where('nombre', '=', $buscaGrupo)->get();
-        $estudiante= Estudiante:: orderBy('id', 'ASC')->paginate(5);
     	foreach ($group->docentes as $docente){
     		if ($docente->pivot->responsable) {
     			$docenteResponsable=$docente;
     		}
     	}
     	//$docenteResponsable=Docente::find($docenteResponsable);
-    	return view('acudiente.Grupo(Acudiente)')-> with('grupo',$group)->with('docenteResponsable', $docenteResponsable)->with('estudiante', $estudiante);
+    	return view('acudiente.Grupo(Acudiente)')-> with('grupo',$group)->with('docenteResponsable', $docenteResponsable);
     }
 
     public function buscaGrupo(Request $req){

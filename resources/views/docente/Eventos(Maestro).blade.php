@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 
-<html>
+<html  lang="{{ app()->getLocale() }}">
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width , user-scalable=no">
@@ -148,23 +148,15 @@
                         <ul class="comentarios">
 													@foreach($actividad->comentarios as $comentario)
 														 @if(!is_null($comentario->docente_id))
-														 		@foreach($grupo->docentes->unique('id') as $doc)
-																	@if($doc->id == $comentario->docente_id)
-																	  <li id="comentario">
-																			 <time>{{$comentario->created_at}}</time> <h5>{{$doc->nombre}} {{$doc->apellido}}</h5>
-																			 <p>{{$comentario->texto}}</p>
-																	  </li>
-																  @endif
-																@endforeach
+														  <li id="comentario">
+																 <time>{{$comentario->created_at}}</time> <h4>{{$comentario->docente->nombre}} {{$comentario->docente->apellido}}</h4>
+																 <p>{{$comentario->texto}}</p>
+														  </li>
 														 @else
-															 @foreach($grupo->acudientes as $acu)
-																 @if($acu->id == $comentario->acudiente_id)
 																	 <li id="comentario">
-																			<time>{{$comentario->created_at}}</time> <h5>{{$acu->nombre}} {{$acu->apellido}}</h5>
+																			<time>{{$comentario->created_at}}</time> <h4>{{$comentario->acudiente->nombre}} {{$comentario->acudiente->apellido}}</h4>
 																			<p>{{$comentario->texto}}</p>
 																	 </li>
-																 @endif
-															 @endforeach
 														 @endif
 													@endforeach
                         </ul>
@@ -220,8 +212,8 @@
 													<div class="row uniform 50%">
 	                            <div class="12u">
 	                                <div class="select-wrapper">
-	                                    <select name="category[]" id="category" multiple="multiple" required size="5">
-	                                        <option value="">Asignatura del docente</option>
+	                                    <select name="category[]" id="category" multiple="multiple" required size="6">
+	                                        <option disabled="disabled" value="">Asignaturas del docente de grupo</option>
 																					@foreach($asigs as $asig)
 																						<option value="{{$asig->id}}">{{$asig->nombre}}</option>
 																					@endforeach

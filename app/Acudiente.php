@@ -31,6 +31,10 @@ class Acudiente extends Authenticatable
     return $this->belongsToMany('\App\Grupo');
   }
 
+  public function comentarios(){
+    return $this->hasMany('App\Comentario');
+  }
+
   //un acudiente participa en un chat
   public function chats(){
     return $this->hasMany('App\Chat');

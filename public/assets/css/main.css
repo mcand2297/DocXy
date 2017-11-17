@@ -263,7 +263,7 @@
 		clear: both;
 		height: 0;
 	}
-	
+
 	.row.uniform > * > :first-child {
 		margin-top: 0;
 	}
@@ -1871,7 +1871,7 @@
 		line-height: 1.5em;
 		letter-spacing: 0;
 	}
-	
+
 	sub {
 		font-size: 0.8em;
 		position: relative;
@@ -2023,8 +2023,12 @@
 	input[type="text"],
 	input[type="password"],
 	input[type="email"],
-	select {
+	select{
 		height: 3em;
+	}
+
+	select[multiple] {
+		height: 6em;//agranda el select
 	}
 
 /* Box */
@@ -2515,7 +2519,7 @@
 			position: absolute;
 			top: 0;
             font-size: 25px;
-		}	
+		}
 
 		#header.reveal {
 			-moz-animation: reveal-header 0.5s;
@@ -2533,7 +2537,7 @@
 			color: rgba(255, 255, 255, 0.75);
 			position: absolute;
 		}
-			
+
 
 /* Banner */
 
@@ -2679,7 +2683,7 @@
       100% {
         -webkit-transform: translateY(-600px) rotate(600deg);
                 transform: translateY(-600px) rotate(600deg);
-      }  
+      }
     }
 
     #login ul{
@@ -2716,7 +2720,7 @@
             padding: 5px 15px;
             width: 40%;
         }
-        
+
         #social button:hover{
             opacity: 0.8;
         }
@@ -2941,15 +2945,15 @@
 						margin-bottom: -3em;
 						margin-top: 3em;
 					}
-        
+
         #social button{
             width: 80%;
         }
-        
+
         #cta {
             padding: 2em 2em 1em 3em;
         }
-        
+
         #header{
             display: none;
         }
@@ -2997,7 +3001,7 @@
 				overflow-x: hidden;
 				padding: 1em 1em !important;
 			}
-        
+
             .\36 u, .\36 u\24 {
 		      width: 100%;
             }
@@ -3048,7 +3052,7 @@
 				#banner p {
 					font-size: 1.25em;
 				}
-            
+
             #login ul input{
                 width: 90%;
             }
@@ -3075,7 +3079,7 @@
 				padding: 0;
 				margin-top: 0;
 			}
-        
+
         #cta {
             padding: 2em 2em 1em 1em;
         }

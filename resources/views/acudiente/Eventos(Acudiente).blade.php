@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 
-<html>
+<html  lang="{{ app()->getLocale() }}">
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width , user-scalable=no">
@@ -42,10 +42,13 @@
             @foreach($bG as $bGG)
             <ul>
                 <li><img src="{{asset('assets/images/group-green.png')}}" ><h5>{{$bGG->nombre}}</h5>
-                @foreach($bGG->docentes as $buscarDocentes)
-                    <?php $docenteBuscado=$buscarDocentes; ?>
+                @foreach($bGG->docentes->unique('id') as $buscarDocentes)
+                    <?php if($buscarDocentes->pivot->responsable == true){
+											$docenteBuscado=$buscarDocentes;
+											echo "<h5>{$docenteBuscado->nombre} {$docenteBuscado->apellido}</h5> <button class='button alt small entrar'>Entrar</button></li>";
+										}?>
                 @endforeach
-                <h5>{{$docenteBuscado->nombre}} {{$docenteBuscado->apellido}}</h5> <button class="button alt small entrar">Entrar</button></li>
+
             </ul>
             @endforeach
             @endif
@@ -140,23 +143,15 @@
                         <ul class="comentarios">
 	                        @foreach($sss->comentarios as $comentario)
 	                             @if(!is_null($comentario->docente_id))
-	                                    @foreach($ss->docentes->unique('id') as $doc)
-	                                        @if($doc->id == $comentario->docente_id)
-	                                          <li id="comentario">
-	                                                 <time>{{$comentario->created_at}}</time> <h5>{{$doc->nombre}} {{$doc->apellido}}</h5>
-	                                                 <p>{{$comentario->texto}}</p>
-	                                          </li>
-	                                      @endif
-	                                    @endforeach
+                                 <li id="comentario">
+                                    <time>{{$comentario->created_at}}</time> <h4>{{$comentario->docente->nombre}} {{$comentario->docente->apellido}}</h4>
+                                    <p>{{$comentario->texto}}</p>
+                                 </li>
 	                             @else
-	                                 @foreach($ss->acudientes as $acu)
-	                                     @if($acu->id == $comentario->acudiente_id)
-	                                         <li id="comentario">
-	                                                <time>{{$comentario->created_at}}</time> <h5>{{$acu->nombre}} {{$acu->apellido}}</h5>
-	                                                <p>{{$comentario->texto}}</p>
-	                                         </li>
-	                                     @endif
-	                                 @endforeach
+	                               <li id="comentario">
+                                    <time>{{$comentario->created_at}}</time> <h4>{{$comentario->acudiente->nombre}} {{$comentario->acudiente->apellido}}</h4>
+                                    <p>{{$comentario->texto}}</p>
+	                               </li>
 	                             @endif
 	                        @endforeach
                         </ul>
@@ -186,6 +181,7 @@
                 @foreach($bG as $bGG)
                 <div id="modalHeader">¿Quieres unirte a este grupo? <span id="cross" class="icon-cross"></span> </div>
                 <?php $grupoId=$bGG->id; ?>
+								<br>
                 <div id="modalBody">
                     <div id="info">
                         <img src="{{asset('assets/images/group-green.png')}}" >

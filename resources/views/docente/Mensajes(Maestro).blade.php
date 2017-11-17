@@ -121,22 +121,24 @@
             <div id="contactos">
             <form class="input-button" method="POST" action="{{route('docente.home.mensajes.nuevoChat')}}">
 							{{ csrf_field() }}
-								<input type="text" name="acudiente" required>
+								<input type="text" placeholder="buscar acudiente por nick o email" name="acudiente" required>
                 <button  type="submit" class="button alt">Buscar</button>
             </form>
             <div id="remitentes">
 							@if(!is_null($chats))
 								@foreach($chats as $chat)
-								<a href="{{ url('docente/home/mensajes/chat', array('Chat'=>$chat->id)) }}">
-									<div class="remitente">
-											<img src="{{asset('assets/images/user.png')}}">
-											<h1>{{$chat->acudiente->nombre}} {{$chat->acudiente->apellido}}</h1>
-											<time>{{$chat->create_at}}</time>
-											@if(!is_null($chat->mensajes->last()))
-												<p>{{$chat->mensajes->last()->texto}}</p>
-											@endif
-									</div>
-								</a>
+									@if($chat->mensajes->isNotEmpty())
+										<a href="{{ url('docente/home/mensajes/chat', array('Chat'=>$chat->id)) }}">
+											<div class="remitente">
+													<img src="{{asset('assets/images/user.png')}}">
+													<h1>{{$chat->acudiente->nombre}} {{$chat->acudiente->apellido}}</h1>
+													<time>{{$chat->create_at}}</time>
+													@if(!is_null($chat->mensajes->last()))
+														<p>{{$chat->mensajes->last()->texto}}</p>
+													@endif
+											</div>
+										</a>
+									@endif
 								@endforeach
 							@endif
             </div>
@@ -150,7 +152,7 @@
 							@if(isset($chatCompleto))
 								@foreach($chats as $chat)
 									@if($chat->id == $chatCompleto)
-		                <div id="header-chat">acudiente nombre acudiente apellido</div>
+		                <div id="header-chat">{{$chat->acudiente->nombre}} {{$chat->acudiente->apellido}}</div>
 		                <div id="conversacion">
 										@foreach($chat->mensajes as $mnj)
 											@if(!is_null($mnj->docente_id))

@@ -114,7 +114,7 @@
             <!-- Cuerpo de contenedor para mostrar los contactos-->
             <div id="contactos">
             <form class="input-button" method="POST" action="{{route('acudiente.home.nuevoChat')}}">
-                <input type="text" name="docente" required>
+                <input type="text" placeholder="buscar docente por nick o email" name="docente" required>
                 <button class="button alt">Buscar</button>
             </form>
             <div id="remitentes">
@@ -158,7 +158,7 @@
                     <div class="clip1"></div>
                     <div class="contenido">
                         <p>{{$mess->texto}}</p>
-                        <time>10:57</time>
+                        <time>{{$mess->created_at}}</time>
                     </div>
                 </div>
                 @else
@@ -166,7 +166,7 @@
                     <div class="clip2"></div>
                     <div class="contenido">
                         <p>{{$mess->texto}}</p>
-                        <time>10:59</time>
+                        <time>{{$mess->created_at}}</time>
                     </div>
                 </div>
                 @endif
